@@ -124,7 +124,6 @@ void MainWindow::on_initialize_btn_clicked() {
 }
 
 void MainWindow::on_offboard_start_btn_clicked() {
-  console_log("selva");
 
   // Send it once before starting offboard, otherwise it will be rejected.
   const Offboard::VelocityNedYaw stay{};
@@ -139,4 +138,11 @@ void MainWindow::on_offboard_start_btn_clicked() {
   }
 }
 
-void MainWindow::on_offboard_stop_btn_clicked() { console_log("selva"); }
+void MainWindow::on_offboard_stop_btn_clicked() {
+  Offboard::Result offboard_result = offboard_result = offboard->stop();
+  if (offboard_result != Offboard::Result::Success) {
+    console_log("Offboard stop failed");
+  } else {
+    console_log("Offboard stopped");
+  }
+}
