@@ -1,21 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QDebug>
-#include <QFile>
-#include <QMainWindow>
-#include <QMessageBox>
-#include <QTextStream>
-#include <chrono>
-#include <cstdint>
-#include <future>
-#include <iostream>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/offboard/offboard.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
-#include <memory>
-#include <thread>
+#pragma once
+#include "include_helper.h"
 
 using namespace mavsdk;
 using std::chrono::seconds;
@@ -70,9 +54,17 @@ private:
   // List of offboard modes
   const QString circle_mode = "fly circles forever";
   const QString lemniscate_mode = "fly a lemniscate forever";
-  const external_pos_control_mode = "external position control";
+  const QString external_pos_control_mode = "external position control";
+
+  // fastdds objects
+private:
+  // Create doamin participant
+  std::unique_ptr<DefaultParticipant> dp;
+
+  // Motion capture data subscriber
+  DDSSubscriber<idl_msg::QuadPositionCmdPubSubType, cpp_msg::QuadPositionCmd>
+      *cmd_sub;
 
 private:
   std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 };
-#endif // MAINWINDOW_H

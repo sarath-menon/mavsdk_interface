@@ -27,12 +27,26 @@ MainWindow::MainWindow(QWidget *parent)
   ui->port_selector->addItem(px4_simulator);
 
   // Add options to offboard mode selector combobox
-  ui->port_selector->addItem(circle_mode);
-  ui->port_selector->addItem(lemniscate_mode);
-  ui->port_selector->addItem(external_pos_control_mode);
+  ui->mode_selector->addItem(circle_mode);
+  ui->mode_selector->addItem(lemniscate_mode);
+  ui->mode_selector->addItem(external_pos_control_mode);
+
+  // Create fastdds objects
+  // Create domain participant
+  dp = std::make_unique<DefaultParticipant>(0, "godot_visualizer_qos");
+
+  // Create  subscriber
+  cmd_sub = new DDSSubscriber(idl_msg::QuadPositionCmdPubSubType(),
+                              &sub::pos_cmd, "pos_cmd", dp->participant());
+
+  // initialize  subscriberDefaultParticipant
+  cmd_sub->init();
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+  delete ui;
+  delete cmd_sub;
+}
 
 std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
   console_log("Waiting to discover system...");
