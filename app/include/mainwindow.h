@@ -47,10 +47,10 @@ private slots:
 private:
   QString console_msg{};
 
-  QString value() const { return console_msg; }
+  const QString value() const { return console_msg; }
 
 public slots:
-  void console_log(QString msg);
+  void console_log(const QString msg);
 
 signals:
   void msg_changed(QString new_msg);

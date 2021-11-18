@@ -95,7 +95,7 @@ void MainWindow::on_land_btn_clicked() {
 }
 
 // logs string to console
-void MainWindow::console_log(QString msg) { ui->console->append(msg); }
+void MainWindow::console_log(const QString msg) { ui->console->append(msg); }
 
 // Connect to mavsd instance selected in dropdown
 void MainWindow::on_initialize_btn_clicked() {
