@@ -3,6 +3,7 @@ set(SRC_FILES
         src/mainwindow.cpp
         src/mainwindow.ui
         src/fastdds_thread.cpp
+        src/circle_mode.cpp
 )
 
 set(HEADER_FILES

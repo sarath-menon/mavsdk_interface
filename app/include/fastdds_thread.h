@@ -38,6 +38,7 @@ private:
   offboard_mode offb_mode;
 
   void external_pos_control();
+  void circle_forever();
 
 public:
   // setter function

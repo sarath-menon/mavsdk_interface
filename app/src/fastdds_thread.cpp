@@ -44,7 +44,7 @@ void fastdds_thread::run() { // Blocks until new data is available
     switch (offb_mode) {
 
     case offboard_mode::circle:
-      std::cout << "Circle not avaialable" << std::endl;
+      circle_forever();
       break;
 
     case offboard_mode::lemniscate:
