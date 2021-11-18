@@ -43,13 +43,15 @@ private slots:
 private:
   Ui::MainWindow *ui;
 
-  // Pointer to mavsdk object
+  // Pointer to mavsdk objects
   std::unique_ptr<Mavsdk> mavsdk;
-
   std::shared_ptr<System> system;
-
   std::unique_ptr<Telemetry> telemetry;
-
   std::unique_ptr<Action> action;
+
+  // List of ports to connect to px4
+  const QString xbee_mac = "serial:///dev/tty.usbserial-D309S1F2";
+  const QString xbee_ubuntu = "serial:///dev/ttyUSB0";
+  const QString px4_simulator = "udp://:14540";
 };
 #endif // MAINWINDOW_H

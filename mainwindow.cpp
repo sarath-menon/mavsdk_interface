@@ -68,6 +68,11 @@ MainWindow::MainWindow(QWidget *parent)
   // Create telemetry object
   telemetry = std::make_unique<Telemetry>(system);
   action = std::make_unique<Action>(system);
+
+  // Add ports to combobox
+  ui->port_selector->addItem(xbee_mac);
+  ui->port_selector->addItem(xbee_ubuntu);
+  ui->port_selector->addItem(px4_simulator);
 }
 
 MainWindow::~MainWindow() { delete ui; }
