@@ -64,7 +64,5 @@ private:
 private:
   std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 
-  // All offboard modes
-  enum class offboard_mode { circle, lemniscate, external };
-  offboard_mode offb_mode;
+  int offb_mode_index{};
 };

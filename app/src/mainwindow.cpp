@@ -146,6 +146,8 @@ void MainWindow::on_offboard_start_btn_clicked() {
   // Start fastdds thread
   fastdds_obj = std::make_unique<fastdds_thread>(std::move(offboard));
   fastdds_obj->start();
+
+  fastdds_obj->set_offboard_mode(offb_mode_index);
 }
 
 void MainWindow::on_offboard_stop_btn_clicked() {
@@ -169,13 +171,15 @@ void MainWindow::on_offboard_stop_btn_clicked() {
 }
 
 void MainWindow::on_mode_selector_currentIndexChanged(int index) {
-  offb_mode = offboard_mode{index};
 
   switch (index) {
   case 0:
-    console_log("Offboard mode: Circle forever selected");
+    console_log("No offboard mode selected");
     break;
   case 1:
+    console_log("Offboard mode: Circle forever selected");
+    break;
+  case 2:
     console_log("Offboard mode: Lemnicate forever selected");
     break;
   case 3:
@@ -184,4 +188,6 @@ void MainWindow::on_mode_selector_currentIndexChanged(int index) {
   default:
     exit(0);
   }
+
+  offb_mode_index = index;
 }
