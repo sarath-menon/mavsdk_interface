@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include <mavsdk/log_callback.h>
 
 std::shared_ptr<System> get_system(Mavsdk &mavsdk) {
   qDebug() << "Waiting to discover system...\n";
@@ -35,6 +36,20 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  // Custom logger that logs to app console
+  mavsdk::log::subscribe(
+      [](mavsdk::log::Level level,   // message severity level
+         const std::string &message, // message text
+         const std::string &file, // source file from which the message was sent
+         int line) {              // line number in the source file
+        // process the log message in a way you like
+        qDebug() << QString::fromStdString(message);
+
+        // returning true from the callback disables printing the message to
+        // stdout
+        return level < mavsdk::log::Level::Warn;
+      });
+
   // Craet mavsdk object
   mavsdk = std::make_unique<Mavsdk>();
 
@@ -53,8 +68,6 @@ MainWindow::MainWindow(QWidget *parent)
   // Create telemetry object
   telemetry = std::make_unique<Telemetry>(system);
   action = std::make_unique<Action>(system);
-
-  // Create action object [for takeoff, land etc]
 }
 
 MainWindow::~MainWindow() { delete ui; }
