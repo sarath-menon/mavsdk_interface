@@ -31,6 +31,9 @@
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
         <item>
          <widget class="QFrame" name="left_menu">
           <property name="frameShape">
@@ -182,6 +185,32 @@ color: rgb(0, 0, 0);</string>
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="Line" name="line">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QFrame" name="intialize_frame">
           <property name="frameShape">
@@ -191,12 +220,27 @@ color: rgb(0, 0, 0);</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="spacing">
+            <number>20</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>15</number>
+           </property>
            <item>
             <widget class="QPushButton" name="initialize_btn">
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>50</height>
+               <height>40</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -209,12 +253,61 @@ color: rgb(0, 0, 0);</string>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="port_selector">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);
-selection-background-color: rgb(135,206,250);</string>
+            <widget class="QFrame" name="frame">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(0, 249, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Connnection port</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="port_selector">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>15</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(117, 117, 117);</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
