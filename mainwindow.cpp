@@ -49,6 +49,12 @@ MainWindow::MainWindow(QWidget *parent)
   if (!system) {
     std::cerr << "Couldn't get system" << std::endl;
   }
+
+  // Create telemetry object
+  telemetry = std::make_unique<Telemetry>(system);
+  action = std::make_unique<Action>(system);
+
+  // Create action object [for takeoff, land etc]
 }
 
 MainWindow::~MainWindow() { delete ui; }

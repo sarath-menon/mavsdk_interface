@@ -37,5 +37,9 @@ private:
   std::unique_ptr<Mavsdk> mavsdk;
 
   std::shared_ptr<System> system;
+
+  std::unique_ptr<Telemetry> telemetry;
+
+  std::unique_ptr<Action> action;
 };
 #endif // MAINWINDOW_H
