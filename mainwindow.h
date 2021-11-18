@@ -33,6 +33,9 @@ public:
 private:
   Ui::MainWindow *ui;
 
+  // Pointer to mavsdk object
   std::unique_ptr<Mavsdk> mavsdk;
+
+  std::shared_ptr<System> system;
 };
 #endif // MAINWINDOW_H

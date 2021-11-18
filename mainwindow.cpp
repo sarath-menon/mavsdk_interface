@@ -35,10 +35,20 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  // Craet mavsdk object
   mavsdk = std::make_unique<Mavsdk>();
 
+  // Connect to a running instance of px4 [real world/simulatiion]
   ConnectionResult connection_result =
       mavsdk->add_any_connection("udp://:14540");
+
+  // Get pointer to system from mavsdk obj
+  system = get_system(*mavsdk);
+
+  // Error checking
+  if (!system) {
+    std::cerr << "Couldn't get system" << std::endl;
+  }
 }
 
 MainWindow::~MainWindow() { delete ui; }
