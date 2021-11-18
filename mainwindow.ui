@@ -201,7 +201,8 @@ color: rgb(0, 0, 0);</string>
          <widget class="QComboBox" name="port_selector">
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+color: rgb(0, 0, 0);
+selection-background-color: rgb(135,206,250);</string>
           </property>
          </widget>
         </item>
