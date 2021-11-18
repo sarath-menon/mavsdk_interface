@@ -57,5 +57,8 @@ private:
   const QString external_pos_control_mode = "external position control";
 
 private:
+  std::unique_ptr<fastdds_thread> fastdds_obj;
+
+private:
   std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 };

@@ -31,7 +31,9 @@ void fastdds_thread::run() { // Blocks until new data is available
     if (QThread::currentThread()->isInterruptionRequested()) {
       return;
     }
-
+    // Wait ill subscriber receives data
     cmd_sub->listener->wait_for_data_for_ms(100);
+
+    // qDebug() << "X Position:" << sub::pos_cmd.position.x;
   };
-}
+};

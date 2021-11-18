@@ -30,9 +30,19 @@ MainWindow::MainWindow(QWidget *parent)
   ui->mode_selector->addItem(circle_mode);
   ui->mode_selector->addItem(lemniscate_mode);
   ui->mode_selector->addItem(external_pos_control_mode);
+
+  // Start fastdds thread
+  fastdds_obj = std::make_unique<fastdds_thread>();
+  fastdds_obj->start();
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+  fastdds_obj->quit();
+  fastdds_obj->requestInterruption();
+
+  fastdds_obj->wait();
+  delete ui;
+}
 
 std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
   console_log("Waiting to discover system...");
