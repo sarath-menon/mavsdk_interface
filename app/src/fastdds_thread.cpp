@@ -2,7 +2,9 @@
 #include <qglobal.h>
 #include <qthread.h>
 
-fastdds_thread::fastdds_thread(QObject *parent) : QThread(parent) {
+fastdds_thread::fastdds_thread(std::unique_ptr<mavsdk::Offboard> offboard,
+                               QObject *parent)
+    : QThread(parent) {
 
   // Fastdds ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 
@@ -16,7 +18,9 @@ fastdds_thread::fastdds_thread(QObject *parent) : QThread(parent) {
 
   // initialize  subscriberDefaultParticipant
   cmd_sub->init();
-  // Qt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // mavsdk ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  offboard_ = std::move(offboard);
 }
 
 fastdds_thread::~fastdds_thread() { // Fastdds
@@ -34,6 +38,6 @@ void fastdds_thread::run() { // Blocks until new data is available
     // Wait ill subscriber receives data
     cmd_sub->listener->wait_for_data_for_ms(100);
 
-    // qDebug() << "X Position:" << sub::pos_cmd.position.x;
+    qDebug() << "X Position:" << sub::pos_cmd.position.x;
   };
 };

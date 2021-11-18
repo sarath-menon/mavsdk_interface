@@ -30,19 +30,9 @@ MainWindow::MainWindow(QWidget *parent)
   ui->mode_selector->addItem(circle_mode);
   ui->mode_selector->addItem(lemniscate_mode);
   ui->mode_selector->addItem(external_pos_control_mode);
-
-  // Start fastdds thread
-  fastdds_obj = std::make_unique<fastdds_thread>();
-  fastdds_obj->start();
 }
 
-MainWindow::~MainWindow() {
-  fastdds_obj->quit();
-  fastdds_obj->requestInterruption();
-
-  fastdds_obj->wait();
-  delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
 std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
   console_log("Waiting to discover system...");
@@ -151,13 +141,26 @@ void MainWindow::on_offboard_start_btn_clicked() {
   } else {
     console_log("Offboard started");
   }
+
+  // Start offboard thread
+
+  // Start fastdds thread
+  fastdds_obj = std::make_unique<fastdds_thread>(std::move(offboard));
+  fastdds_obj->start();
 }
 
 void MainWindow::on_offboard_stop_btn_clicked() {
+  // Stop offboard thread
+  fastdds_obj->quit();
+  fastdds_obj->requestInterruption();
+  fastdds_obj->wait();
+
   Offboard::Result offboard_result = offboard_result = offboard->stop();
   if (offboard_result != Offboard::Result::Success) {
     console_log("Offboard stop failed");
   } else {
     console_log("Offboard stopped");
   }
+
+  //
 }
