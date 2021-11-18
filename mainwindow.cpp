@@ -114,4 +114,7 @@ void MainWindow::on_land_btn_clicked() {
 }
 
 // logs string to console
-void MainWindow::console_log(QString msg) { ui->textBrowser->setText(msg); }
+void MainWindow::console_log(QString msg) {
+  ui->textBrowser->append(msg);
+  // ui->textBrowser->append("\n");
+}
