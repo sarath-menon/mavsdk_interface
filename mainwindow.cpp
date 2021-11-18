@@ -34,6 +34,11 @@ std::shared_ptr<System> get_system(Mavsdk &mavsdk) {
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
+
+  mavsdk = std::make_unique<Mavsdk>();
+
+  ConnectionResult connection_result =
+      mavsdk->add_any_connection("udp://:14540");
 }
 
 MainWindow::~MainWindow() { delete ui; }

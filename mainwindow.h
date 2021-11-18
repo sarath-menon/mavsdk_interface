@@ -33,8 +33,6 @@ public:
 private:
   Ui::MainWindow *ui;
 
-  Mavsdk mavsdk;
-  ConnectionResult connection_result =
-      mavsdk.add_any_connection("udp://:14540");
+  std::unique_ptr<Mavsdk> mavsdk;
 };
 #endif // MAINWINDOW_H
