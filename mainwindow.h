@@ -42,6 +42,8 @@ private slots:
 
   void on_land_btn_clicked();
 
+  void on_initialize_btn_clicked();
+
 private:
   QString console_msg{};
 

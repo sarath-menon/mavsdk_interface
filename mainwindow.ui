@@ -174,7 +174,7 @@ color: rgb(0, 0, 0);</string>
         </item>
        </layout>
       </widget>
-      <widget class="QFrame" name="console_frame">
+      <widget class="QFrame" name="frame">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -182,21 +182,6 @@ color: rgb(0, 0, 0);</string>
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="spacing">
-         <number>15</number>
-        </property>
-        <property name="leftMargin">
-         <number>20</number>
-        </property>
-        <property name="topMargin">
-         <number>10</number>
-        </property>
-        <property name="rightMargin">
-         <number>20</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
         <item>
          <widget class="QComboBox" name="port_selector">
           <property name="styleSheet">
@@ -207,20 +192,27 @@ selection-background-color: rgb(135,206,250);</string>
          </widget>
         </item>
         <item>
-         <widget class="QTextBrowser" name="textBrowser">
+         <widget class="QPushButton" name="initialize_btn">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(255, 255, 255);
+           <string notr="true">background-color: rgb(255, 251, 0);
 color: rgb(0, 0, 0);</string>
+          </property>
+          <property name="text">
+           <string>Initialize</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="Line" name="line">
+         <widget class="QTextBrowser" name="textBrowser">
           <property name="styleSheet">
-           <string notr="true">color: rgb(0, 249, 0);</string>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
           </property>
          </widget>
         </item>

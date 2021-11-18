@@ -57,25 +57,6 @@ MainWindow::MainWindow(QWidget *parent)
         return level < mavsdk::log::Level::Warn;
       });
 
-  // Create mavsdk object
-  mavsdk = std::make_unique<Mavsdk>();
-
-  // Connect to a running instance of px4 [real world/simulatiion]
-  ConnectionResult connection_result =
-      mavsdk->add_any_connection("udp://:14540");
-
-  // Get pointer to system from mavsdk obj
-  system = get_system(*mavsdk);
-
-  // Error checking
-  if (!system) {
-    std::cerr << "Couldn't get system" << std::endl;
-  }
-
-  // Create telemetry object
-  telemetry = std::make_unique<Telemetry>(system);
-  action = std::make_unique<Action>(system);
-
   // Add ports to combobox
   ui->port_selector->addItem(xbee_mac);
   ui->port_selector->addItem(xbee_ubuntu);
@@ -117,4 +98,26 @@ void MainWindow::on_land_btn_clicked() {
 void MainWindow::console_log(QString msg) {
   ui->textBrowser->append(msg);
   // ui->textBrowser->append("\n");
+}
+
+// Connect to mavsd instance selected in dropdown
+void MainWindow::on_initialize_btn_clicked() {
+  // Create mavsdk object
+  mavsdk = std::make_unique<Mavsdk>();
+
+  QString mavsdk_port = ui->port_selector->currentText();
+  ConnectionResult connection_result =
+      mavsdk->add_any_connection(mavsdk_port.toStdString());
+
+  // Get pointer to system from mavsdk obj
+  system = get_system(*mavsdk);
+
+  // Error checking
+  if (!system) {
+    std::cerr << "Couldn't get system" << std::endl;
+  }
+
+  // Create telemetry object
+  telemetry = std::make_unique<Telemetry>(system);
+  action = std::make_unique<Action>(system);
 }
