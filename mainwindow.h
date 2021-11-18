@@ -1,9 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-
 #include <QDebug>
+#include <QFile>
+#include <QMainWindow>
+#include <QMessageBox>
+#include <QTextStream>
 #include <chrono>
 #include <cstdint>
 #include <future>
@@ -39,6 +41,17 @@ private slots:
   void on_takeoff_btn_clicked();
 
   void on_land_btn_clicked();
+
+private:
+  QString console_msg{};
+
+  QString value() const { return console_msg; }
+
+public slots:
+  void console_log(QString msg);
+
+signals:
+  void msg_changed(QString new_msg);
 
 private:
   Ui::MainWindow *ui;

@@ -36,21 +36,28 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  QObject::connect(this, &MainWindow::msg_changed, this,
+                   &MainWindow::console_log);
+
   // Custom logger that logs to app console
   mavsdk::log::subscribe(
-      [](mavsdk::log::Level level,   // message severity level
-         const std::string &message, // message text
-         const std::string &file, // source file from which the message was sent
-         int line) {              // line number in the source file
+      [this](mavsdk::log::Level level,   // message severity level
+             const std::string &message, // message text
+             const std::string
+                 &file,  // source file from which the message was sent
+             int line) { // line number in the source file
         // process the log message in a way you like
         qDebug() << QString::fromStdString(message);
+
+        // log msg to console
+        emit msg_changed(QString::fromStdString(message));
 
         // returning true from the callback disables printing the message to
         // stdout
         return level < mavsdk::log::Level::Warn;
       });
 
-  // Craet mavsdk object
+  // Create mavsdk object
   mavsdk = std::make_unique<Mavsdk>();
 
   // Connect to a running instance of px4 [real world/simulatiion]
@@ -105,3 +112,6 @@ void MainWindow::on_land_btn_clicked() {
     qDebug() << "Land failed";
   }
 }
+
+// logs string to console
+void MainWindow::console_log(QString msg) { ui->textBrowser->setText(msg); }
