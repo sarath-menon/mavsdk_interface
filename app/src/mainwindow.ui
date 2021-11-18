@@ -172,6 +172,18 @@ color: rgb(0, 0, 0);</string>
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QComboBox" name="mode_selector">
+             <property name="currentText">
+              <string>Select Mode</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Select Mode</string>
+              </property>
+             </item>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -299,12 +311,17 @@ color: rgb(0, 0, 0);</string>
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>15</pointsize>
+                  <pointsize>13</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgb(117, 117, 117);</string>
                 </property>
+                <item>
+                 <property name="text">
+                  <string>Select px4 connection port</string>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>
