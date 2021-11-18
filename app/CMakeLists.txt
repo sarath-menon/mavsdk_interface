@@ -30,10 +30,10 @@ target_link_libraries(mavsdk_gui_interface PRIVATE
 )
 
 
-# # Other dependencies
-# target_link_libraries(mavsdk_gui_interface PRIVATE 
-# comm_lib
-# )
+# Other dependencies
+target_link_libraries(mavsdk_gui_interface PRIVATE 
+comm_lib
+)
 
 
 set_target_properties(mavsdk_gui_interface PROPERTIES
