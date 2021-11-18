@@ -62,10 +62,28 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::on_arm_btn_clicked() {
   qDebug() << "Arming...\n";
   const Action::Result arm_result = action->arm();
+  if (arm_result != Action::Result::Success) {
+    qDebug() << "Arming failed: ";
+  }
 }
 
-void MainWindow::on_disarm_btn_clicked() {}
+void MainWindow::on_disarm_btn_clicked() {
+  qDebug() << "Taking off...\n";
+  const Action::Result arm_result = action->disarm();
+}
 
-void MainWindow::on_land_btn_clicked() {}
+void MainWindow::on_takeoff_btn_clicked() {
+  const Action::Result takeoff_result = action->takeoff();
+  if (takeoff_result != Action::Result::Success) {
+    qDebug() << "Takeoff failed";
+  }
+}
 
-void MainWindow::on_takeoff_btn_clicked() {}
+void MainWindow::on_land_btn_clicked() {
+  qDebug() << "Landing...\n";
+
+  const Action::Result land_result = action->land();
+  if (land_result != Action::Result::Success) {
+    qDebug() << "Land failed";
+  }
+}
