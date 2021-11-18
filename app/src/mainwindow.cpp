@@ -170,4 +170,18 @@ void MainWindow::on_offboard_stop_btn_clicked() {
 
 void MainWindow::on_mode_selector_currentIndexChanged(int index) {
   offb_mode = offboard_mode{index};
+
+  switch (index) {
+  case 0:
+    console_log("Offboard mode: Circle forever selected");
+    break;
+  case 1:
+    console_log("Offboard mode: Lemnicate forever selected");
+    break;
+  case 3:
+    console_log("Offboard mode: External position control selected");
+    break;
+  default:
+    exit(0);
+  }
 }
