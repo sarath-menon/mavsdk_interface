@@ -2,36 +2,6 @@
 #include "./ui_mainwindow.h"
 #include <mavsdk/log_callback.h>
 
-std::shared_ptr<System> get_system(Mavsdk &mavsdk) {
-  qDebug() << "Waiting to discover system...\n";
-  auto prom = std::promise<std::shared_ptr<System>>{};
-  auto fut = prom.get_future();
-
-  // We wait for new systems to be discovered, once we find one that has an
-  // autopilot, we decide to use it.
-  mavsdk.subscribe_on_new_system([&mavsdk, &prom]() {
-    auto system = mavsdk.systems().back();
-
-    if (system->has_autopilot()) {
-      qDebug() << "Discovered autopilot\n";
-
-      // Unsubscribe again as we only want to find one system.
-      mavsdk.subscribe_on_new_system(nullptr);
-      prom.set_value(system);
-    }
-  });
-
-  // We usually receive heartbeats at 1Hz, therefore we should find a
-  // system after around 3 seconds max, surely.
-  if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
-    std::cerr << "No autopilot found.\n";
-    return {};
-  }
-
-  // Get discovered system now.
-  return fut.get();
-}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
@@ -47,10 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
                  &file,  // source file from which the message was sent
              int line) { // line number in the source file
         // process the log message in a way you like
-        qDebug() << QString::fromStdString(message);
+        console_log(message);
 
         // log msg to console
-        emit msg_changed(QString::fromStdString(message));
+        emit msg_changed(message);
 
         // returning true from the callback disables printing the message to
         // stdout
@@ -65,37 +35,71 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
+std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
+  console_log("Waiting to discover system...");
+  auto prom = std::promise<std::shared_ptr<System>>{};
+  auto fut = prom.get_future();
+
+  // We wait for new systems to be discovered, once we find one that has an
+  // autopilot, we decide to use it.
+  mavsdk.subscribe_on_new_system([this, &mavsdk, &prom]() {
+    auto system = mavsdk.systems().back();
+
+    if (system->has_autopilot()) {
+      console_log("Discovered autopilot");
+
+      // Unsubscribe again as we only want to find one system.
+      mavsdk.subscribe_on_new_system(nullptr);
+      prom.set_value(system);
+    }
+  });
+
+  // We usually receive heartbeats at 1Hz, therefore we should find a
+  // system after around 3 seconds max, surely.
+  if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+    console_log("No autopilot found.");
+    return {};
+  }
+
+  // Get discovered system now.
+  return fut.get();
+}
+
 void MainWindow::on_arm_btn_clicked() {
-  qDebug() << "Arming...\n";
+  console_log("Arming...");
   const Action::Result arm_result = action->arm();
   if (arm_result != Action::Result::Success) {
-    qDebug() << "Arming failed: ";
+    console_log("Arming failed: ");
   }
 }
 
 void MainWindow::on_disarm_btn_clicked() {
-  qDebug() << "Taking off...\n";
+  console_log("Taking off..");
   const Action::Result arm_result = action->disarm();
 }
 
 void MainWindow::on_takeoff_btn_clicked() {
   const Action::Result takeoff_result = action->takeoff();
   if (takeoff_result != Action::Result::Success) {
-    qDebug() << "Takeoff failed";
+    console_log("Takeoff failed");
   }
 }
 
 void MainWindow::on_land_btn_clicked() {
-  qDebug() << "Landing...\n";
+  console_log("Landing...");
 
   const Action::Result land_result = action->land();
   if (land_result != Action::Result::Success) {
-    qDebug() << "Land failed";
+    console_log("Land failed");
   }
 }
 
 // logs string to console
-void MainWindow::console_log(const QString msg) { ui->console->append(msg); }
+
+void MainWindow::console_log(const std::string msg) {
+  auto msg_qt = QString::fromStdString(msg);
+  ui->console->append(msg_qt);
+}
 
 // Connect to mavsd instance selected in dropdown
 void MainWindow::on_initialize_btn_clicked() {
@@ -108,7 +112,7 @@ void MainWindow::on_initialize_btn_clicked() {
 
   // Error checking
   if (connection_result != ConnectionResult::Success) {
-    std::cerr << "Connection failed: " << connection_result << '\n';
+    console_log("Connection failed:");
   }
 
   else {
@@ -118,7 +122,7 @@ void MainWindow::on_initialize_btn_clicked() {
 
     // Error checking
     if (!system) {
-      std::cerr << "Couldn't get system" << std::endl;
+      console_log("Couldn't get system");
     }
   }
 
@@ -128,4 +132,17 @@ void MainWindow::on_initialize_btn_clicked() {
   offboard = std::make_unique<Offboard>(system);
 }
 
-void MainWindow::on_offboard_start_btn_clicked() {}
+void MainWindow::on_offboard_start_btn_clicked() {
+
+  // Send it once before starting offboard, otherwise it will be rejected.
+  const Offboard::VelocityNedYaw stay{};
+  // Drone stays in place waiting for commands
+  offboard->set_velocity_ned(stay);
+
+  Offboard::Result offboard_result = offboard->start();
+  if (offboard_result != Offboard::Result::Success) {
+    console_log("Offboard start failed");
+  } else {
+    console_log("Offboard started");
+  }
+}

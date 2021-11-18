@@ -48,15 +48,13 @@ private slots:
   void on_offboard_start_btn_clicked();
 
 private:
-  QString console_msg{};
-
-  const QString value() const { return console_msg; }
+  std::string console_msg{};
 
 public slots:
-  void console_log(const QString msg);
+  void console_log(const std::string msg);
 
 signals:
-  void msg_changed(QString new_msg);
+  void msg_changed(std::string new_msg);
 
 private:
   Ui::MainWindow *ui;
@@ -72,5 +70,8 @@ private:
   const QString xbee_mac = "serial:///dev/tty.usbserial-D309S1F2";
   const QString xbee_ubuntu = "serial:///dev/ttyUSB0";
   const QString px4_simulator = "udp://:14540";
+
+private:
+  std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 };
 #endif // MAINWINDOW_H
