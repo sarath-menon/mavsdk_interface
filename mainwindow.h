@@ -32,5 +32,9 @@ public:
 
 private:
   Ui::MainWindow *ui;
+
+  Mavsdk mavsdk;
+  ConnectionResult connection_result =
+      mavsdk.add_any_connection("udp://:14540");
 };
 #endif // MAINWINDOW_H
