@@ -56,15 +56,6 @@ private:
   const QString lemniscate_mode = "fly a lemniscate forever";
   const QString external_pos_control_mode = "external position control";
 
-  // fastdds objects
-private:
-  // Create doamin participant
-  std::unique_ptr<DefaultParticipant> dp;
-
-  // Motion capture data subscriber
-  DDSSubscriber<idl_msg::QuadPositionCmdPubSubType, cpp_msg::QuadPositionCmd>
-      *cmd_sub;
-
 private:
   std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 };

@@ -30,23 +30,9 @@ MainWindow::MainWindow(QWidget *parent)
   ui->mode_selector->addItem(circle_mode);
   ui->mode_selector->addItem(lemniscate_mode);
   ui->mode_selector->addItem(external_pos_control_mode);
-
-  // Create fastdds objects
-  // Create domain participant
-  dp = std::make_unique<DefaultParticipant>(0, "godot_visualizer_qos");
-
-  // Create  subscriber
-  cmd_sub = new DDSSubscriber(idl_msg::QuadPositionCmdPubSubType(),
-                              &sub::pos_cmd, "pos_cmd", dp->participant());
-
-  // initialize  subscriberDefaultParticipant
-  cmd_sub->init();
 }
 
-MainWindow::~MainWindow() {
-  delete ui;
-  delete cmd_sub;
-}
+MainWindow::~MainWindow() { delete ui; }
 
 std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
   console_log("Waiting to discover system...");

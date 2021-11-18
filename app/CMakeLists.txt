@@ -2,10 +2,12 @@ set(SRC_FILES
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.ui
+        src/fastdds_thread.cpp
 )
 
 set(HEADER_FILES
         include/mainwindow.h
+        include/fastdds_thread.h
 )
 
 
