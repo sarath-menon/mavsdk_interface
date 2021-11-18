@@ -47,14 +47,10 @@ private slots:
 
   void on_offboard_start_btn_clicked();
 
-private:
-  std::string console_msg{};
+  void on_offboard_stop_btn_clicked();
 
-public slots:
-  void console_log(const std::string msg);
-
-signals:
-  void msg_changed(std::string new_msg);
+public:
+  void console_log(const std::string &msg);
 
 private:
   Ui::MainWindow *ui;

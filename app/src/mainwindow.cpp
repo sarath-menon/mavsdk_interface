@@ -6,9 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  QObject::connect(this, &MainWindow::msg_changed, this,
-                   &MainWindow::console_log);
-
   // Custom logger that logs to app console
   mavsdk::log::subscribe(
       [this](mavsdk::log::Level level,   // message severity level
@@ -18,9 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
              int line) { // line number in the source file
         // process the log message in a way you like
         console_log(message);
-
-        // log msg to console
-        emit msg_changed(message);
 
         // returning true from the callback disables printing the message to
         // stdout
@@ -96,7 +90,7 @@ void MainWindow::on_land_btn_clicked() {
 
 // logs string to console
 
-void MainWindow::console_log(const std::string msg) {
+void MainWindow::console_log(const std::string &msg) {
   auto msg_qt = QString::fromStdString(msg);
   ui->console->append(msg_qt);
 }
@@ -115,15 +109,12 @@ void MainWindow::on_initialize_btn_clicked() {
     console_log("Connection failed:");
   }
 
-  else {
+  // Get pointer to system from mavsdk obj
+  system = get_system(*mavsdk);
 
-    // Get pointer to system from mavsdk obj
-    system = get_system(*mavsdk);
-
-    // Error checking
-    if (!system) {
-      console_log("Couldn't get system");
-    }
+  // Error checking
+  if (!system) {
+    console_log("Couldn't get system");
   }
 
   // Create telemetry object
@@ -133,6 +124,7 @@ void MainWindow::on_initialize_btn_clicked() {
 }
 
 void MainWindow::on_offboard_start_btn_clicked() {
+  console_log("selva");
 
   // Send it once before starting offboard, otherwise it will be rejected.
   const Offboard::VelocityNedYaw stay{};
@@ -146,3 +138,5 @@ void MainWindow::on_offboard_start_btn_clicked() {
     console_log("Offboard started");
   }
 }
+
+void MainWindow::on_offboard_stop_btn_clicked() { console_log("selva"); }
