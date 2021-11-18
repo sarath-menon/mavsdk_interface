@@ -25,6 +25,7 @@ Qt${QT_VERSION_MAJOR}::Widgets
 target_link_libraries(mavsdk_gui_interface PRIVATE 
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk_action
+    MAVSDK::mavsdk_offboard
     MAVSDK::mavsdk
 )
 

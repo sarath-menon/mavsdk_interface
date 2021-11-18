@@ -139,7 +139,7 @@ color: rgb(0, 0, 0);</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <widget class="QPushButton" name="offboard_start_btn">
+            <widget class="QPushButton" name="takeoff_btn_2">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -156,7 +156,7 @@ color: rgb(0, 0, 0);</string>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="offboard_stop_btn">
+            <widget class="QPushButton" name="takeoff_btn_3">
              <property name="minimumSize">
               <size>
                <width>0</width>

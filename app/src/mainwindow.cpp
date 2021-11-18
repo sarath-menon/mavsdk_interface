@@ -106,15 +106,26 @@ void MainWindow::on_initialize_btn_clicked() {
   ConnectionResult connection_result =
       mavsdk->add_any_connection(mavsdk_port.toStdString());
 
-  // Get pointer to system from mavsdk obj
-  system = get_system(*mavsdk);
-
   // Error checking
-  if (!system) {
-    std::cerr << "Couldn't get system" << std::endl;
+  if (connection_result != ConnectionResult::Success) {
+    std::cerr << "Connection failed: " << connection_result << '\n';
+  }
+
+  else {
+
+    // Get pointer to system from mavsdk obj
+    system = get_system(*mavsdk);
+
+    // Error checking
+    if (!system) {
+      std::cerr << "Couldn't get system" << std::endl;
+    }
   }
 
   // Create telemetry object
   telemetry = std::make_unique<Telemetry>(system);
   action = std::make_unique<Action>(system);
+  offboard = std::make_unique<Offboard>(system);
 }
+
+void MainWindow::on_offboard_start_btn_clicked() {}

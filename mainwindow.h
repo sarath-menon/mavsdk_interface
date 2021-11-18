@@ -12,7 +12,6 @@
 #include <iostream>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/offboard/offboard.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <memory>
 #include <thread>
@@ -45,15 +44,13 @@ private slots:
 
   void on_initialize_btn_clicked();
 
-  void on_offboard_start_btn_clicked();
-
 private:
   QString console_msg{};
 
-  const QString value() const { return console_msg; }
+  QString value() const { return console_msg; }
 
 public slots:
-  void console_log(const QString msg);
+  void console_log(QString msg);
 
 signals:
   void msg_changed(QString new_msg);
@@ -66,7 +63,6 @@ private:
   std::shared_ptr<System> system;
   std::unique_ptr<Telemetry> telemetry;
   std::unique_ptr<Action> action;
-  std::unique_ptr<Offboard> offboard;
 
   // List of ports to connect to px4
   const QString xbee_mac = "serial:///dev/tty.usbserial-D309S1F2";
