@@ -21,6 +21,11 @@ fastdds_thread::fastdds_thread(std::unique_ptr<mavsdk::Offboard> offboard,
   // mavsdk ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   offboard_ = std::move(offboard);
+
+  // Set intial position
+  sub::pos_cmd.position.x = 0.0;
+  sub::pos_cmd.position.y = 0.0;
+  sub::pos_cmd.position.z = 1.5;
 }
 
 fastdds_thread::~fastdds_thread() { // Fastdds
@@ -37,7 +42,17 @@ void fastdds_thread::run() { // Blocks until new data is available
     }
     // Wait ill subscriber receives data
     cmd_sub->listener->wait_for_data_for_ms(100);
+    pos_msg.north_m = sub::pos_cmd.position.x + x_offset;
+    pos_msg.east_m = sub::pos_cmd.position.y + y_offset;
+    // To account for px4 -z coordinate system (North-East-Down)
+    pos_msg.down_m = -sub::pos_cmd.position.z;
 
-    qDebug() << "X Position:" << sub::pos_cmd.position.x;
-  };
-};
+    offboard_->set_position_ned(pos_msg);
+
+    // qDebug() << "X Position:" << sub::pos_cmd.position.x;
+  }
+}
+
+std::unique_ptr<mavsdk::Offboard> fastdds_thread::return_offboard_obj() {
+  return std::move(offboard_);
+}

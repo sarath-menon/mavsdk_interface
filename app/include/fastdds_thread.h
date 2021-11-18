@@ -13,6 +13,8 @@ public:
 
   void run();
 
+  std::unique_ptr<mavsdk::Offboard> return_offboard_obj();
+
   // fastdds objects
 private:
   // Create doamin participant
@@ -25,4 +27,9 @@ private:
   // mavsdk
 private:
   std::unique_ptr<mavsdk::Offboard> offboard_;
+  mavsdk::Offboard::PositionNedYaw pos_msg{};
+
+  // Local position offsets
+  constexpr static float x_offset = 0.5;
+  constexpr static float y_offset = 0.5;
 };

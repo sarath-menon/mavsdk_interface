@@ -143,13 +143,16 @@ void MainWindow::on_offboard_start_btn_clicked() {
   }
 
   // Start offboard thread
-
   // Start fastdds thread
   fastdds_obj = std::make_unique<fastdds_thread>(std::move(offboard));
   fastdds_obj->start();
 }
 
 void MainWindow::on_offboard_stop_btn_clicked() {
+
+  // Get back opointer to offboard objects
+  offboard = fastdds_obj->return_offboard_obj();
+
   // Stop offboard thread
   fastdds_obj->quit();
   fastdds_obj->requestInterruption();
