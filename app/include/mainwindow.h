@@ -65,4 +65,5 @@ private:
   std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 
   int offb_mode_index{};
+  bool offb_activated_flag{};
 };

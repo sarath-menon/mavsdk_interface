@@ -130,6 +130,9 @@ void MainWindow::on_initialize_btn_clicked() {
 
 void MainWindow::on_offboard_start_btn_clicked() {
 
+  // Set flag to indicate offboard mode is activated
+  offb_activated_flag = true;
+
   // Send it once before starting offboard, otherwise it will be rejected.
   const Offboard::VelocityNedYaw stay{};
   // Drone stays in place waiting for commands
@@ -188,6 +191,10 @@ void MainWindow::on_mode_selector_currentIndexChanged(int index) {
   default:
     exit(0);
   }
-
   offb_mode_index = index;
+
+  // change mode only if offboard thread is running
+  if (offb_activated_flag == true) {
+    fastdds_obj->set_offboard_mode(offb_mode_index);
+  }
 }
