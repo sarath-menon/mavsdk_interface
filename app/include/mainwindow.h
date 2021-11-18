@@ -67,6 +67,11 @@ private:
   const QString xbee_ubuntu = "serial:///dev/ttyUSB0";
   const QString px4_simulator = "udp://:14540";
 
+  // List of offboard modes
+  const QString circle_mode = "fly circles forever";
+  const QString lemniscate_mode = "fly a lemniscate forever";
+  const external_pos_control_mode = "external position control";
+
 private:
   std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 };

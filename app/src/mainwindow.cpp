@@ -21,10 +21,15 @@ MainWindow::MainWindow(QWidget *parent)
         return level < mavsdk::log::Level::Warn;
       });
 
-  // Add ports to combobox
+  // Add options to port selector combobox
   ui->port_selector->addItem(xbee_mac);
   ui->port_selector->addItem(xbee_ubuntu);
   ui->port_selector->addItem(px4_simulator);
+
+  // Add options to offboard mode selector combobox
+  ui->port_selector->addItem(circle_mode);
+  ui->port_selector->addItem(lemniscate_mode);
+  ui->port_selector->addItem(external_pos_control_mode);
 }
 
 MainWindow::~MainWindow() { delete ui; }
