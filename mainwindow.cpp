@@ -2,7 +2,7 @@
 #include "./ui_mainwindow.h"
 
 std::shared_ptr<System> get_system(Mavsdk &mavsdk) {
-  std::cout << "Waiting to discover system...\n";
+  qDebug() << "Waiting to discover system...\n";
   auto prom = std::promise<std::shared_ptr<System>>{};
   auto fut = prom.get_future();
 
@@ -12,7 +12,7 @@ std::shared_ptr<System> get_system(Mavsdk &mavsdk) {
     auto system = mavsdk.systems().back();
 
     if (system->has_autopilot()) {
-      std::cout << "Discovered autopilot\n";
+      qDebug() << "Discovered autopilot\n";
 
       // Unsubscribe again as we only want to find one system.
       mavsdk.subscribe_on_new_system(nullptr);
@@ -58,3 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::on_arm_btn_clicked() {
+  qDebug() << "Arming...\n";
+  const Action::Result arm_result = action->arm();
+}

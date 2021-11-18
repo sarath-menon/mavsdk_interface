@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include <QDebug>
 #include <chrono>
 #include <cstdint>
 #include <future>
@@ -29,6 +30,9 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+
+private slots:
+  void on_arm_btn_clicked();
 
 private:
   Ui::MainWindow *ui;
