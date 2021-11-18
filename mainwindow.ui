@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="takeoff_btn">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -27,7 +27,7 @@
      <string>Takeoff</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="land_btn">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -53,11 +53,11 @@
      <string>Arm</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="disarm_btn">
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>340</y>
+      <y>330</y>
       <width>191</width>
       <height>61</height>
      </rect>

@@ -63,3 +63,9 @@ void MainWindow::on_arm_btn_clicked() {
   qDebug() << "Arming...\n";
   const Action::Result arm_result = action->arm();
 }
+
+void MainWindow::on_disarm_btn_clicked() {}
+
+void MainWindow::on_land_btn_clicked() {}
+
+void MainWindow::on_takeoff_btn_clicked() {}

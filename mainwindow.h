@@ -34,6 +34,12 @@ public:
 private slots:
   void on_arm_btn_clicked();
 
+  void on_disarm_btn_clicked();
+
+  void on_takeoff_btn_clicked();
+
+  void on_land_btn_clicked();
+
 private:
   Ui::MainWindow *ui;
 
