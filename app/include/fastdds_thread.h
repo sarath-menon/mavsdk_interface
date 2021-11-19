@@ -39,6 +39,7 @@ private:
 
   void external_pos_control();
   void circle_forever();
+  void lemniscate_forever();
 
 public:
   // setter function

@@ -48,7 +48,7 @@ void fastdds_thread::run() { // Blocks until new data is available
       break;
 
     case offboard_mode::lemniscate:
-      std::cout << "Lemniscate not avaialable" << std::endl;
+      lemniscate_forever();
       break;
 
     case offboard_mode::external:
