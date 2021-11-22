@@ -37,27 +37,8 @@ private:
   enum class offboard_mode { circle, lemniscate, external };
   offboard_mode offb_mode;
 
-  void external_pos_control();
   void circle_forever();
   void lemniscate_forever();
 
-public:
-  // setter function
-  void set_offboard_mode(const int index) {
-    switch (index) {
-    case 0:
-      break;
-    case 1:
-      offb_mode = offboard_mode::circle;
-      break;
-    case 2:
-      offb_mode = offboard_mode::lemniscate;
-      break;
-    case 3:
-      offb_mode = offboard_mode::external;
-      break;
-    default:
-      exit(0);
-    }
-  }
+
 };

@@ -149,8 +149,6 @@ void MainWindow::on_offboard_start_btn_clicked() {
   // Start fastdds thread
   fastdds_obj = std::make_unique<fastdds_thread>(std::move(offboard));
   fastdds_obj->start();
-
-  fastdds_obj->set_offboard_mode(offb_mode_index);
 }
 
 void MainWindow::on_offboard_stop_btn_clicked() {
@@ -191,10 +189,5 @@ void MainWindow::on_mode_selector_currentIndexChanged(int index) {
   default:
     exit(0);
   }
-  offb_mode_index = index;
 
-  // change mode only if offboard thread is running
-  if (offb_activated_flag == true) {
-    fastdds_obj->set_offboard_mode(offb_mode_index);
-  }
 }
