@@ -102,30 +102,44 @@ void MainWindow::console_log(const std::string &msg) {
 
 // Connect to mavsd instance selected in dropdown
 void MainWindow::on_initialize_btn_clicked() {
-  // Create mavsdk object
-  mavsdk = std::make_unique<Mavsdk>();
+  // check if already initialized
+  if (!initialized) {
+    // Create mavsdk object
+    mavsdk = std::make_unique<Mavsdk>();
 
-  QString mavsdk_port = ui->port_selector->currentText();
-  ConnectionResult connection_result =
-      mavsdk->add_any_connection(mavsdk_port.toStdString());
+    QString mavsdk_port = ui->port_selector->currentText();
+    ConnectionResult connection_result =
+        mavsdk->add_any_connection(mavsdk_port.toStdString());
 
-  // Error checking
-  if (connection_result != ConnectionResult::Success) {
-    console_log("Connection failed:");
+    // Error checking
+    if (connection_result != ConnectionResult::Success) {
+      console_log("Connection failed:");
+    }
+
+    else {
+
+      // Get pointer to system from mavsdk obj
+      system = get_system(*mavsdk);
+
+      // set intitialized status
+      initialized = true;
+
+      // Error checking
+      if (!system) {
+        console_log("Couldn't get system");
+      }
+
+      else {
+        // Create telemetry object
+        telemetry = std::make_unique<Telemetry>(system);
+        action = std::make_unique<Action>(system);
+      }
+    }
   }
 
-  // Get pointer to system from mavsdk obj
-  system = get_system(*mavsdk);
-
-  // Error checking
-  if (!system) {
-    console_log("Couldn't get system");
+  else {
+    console_log("Already Initialized");
   }
-
-  // Create telemetry object
-  telemetry = std::make_unique<Telemetry>(system);
-  action = std::make_unique<Action>(system);
-  offboard = std::make_unique<Offboard>(system);
 }
 
 void MainWindow::on_offboard_start_btn_clicked() {
@@ -135,12 +149,14 @@ void MainWindow::on_offboard_start_btn_clicked() {
     // Set flag to indicate offboard mode is activated
     offb_enabled = true;
 
+    auto offboard = mavsdk::Offboard{system};
+
     // Send it once before starting offboard, otherwise it will be rejected.
     const Offboard::VelocityNedYaw stay{};
     // Drone stays in place waiting for commands
-    offboard->set_velocity_ned(stay);
+    offboard.set_velocity_ned(stay);
 
-    Offboard::Result offboard_result = offboard->start();
+    Offboard::Result offboard_result = offboard.start();
     if (offboard_result != Offboard::Result::Success) {
       console_log("Offboard start failed");
     } else {
@@ -148,7 +164,8 @@ void MainWindow::on_offboard_start_btn_clicked() {
 
       // Start offboard thread
       // Start fastdds thread
-      fastdds_obj = std::make_unique<fastdds_thread>(std::move(offboard));
+      fastdds_obj =
+          std::make_unique<fastdds_thread>(std::make_unique<Offboard>(system));
       fastdds_obj->start();
     }
   }
@@ -163,15 +180,14 @@ void MainWindow::on_offboard_stop_btn_clicked() {
   // check if offboard is enabled before stopping
   if (offb_enabled) { // Set flag to indicate offboard mode is activated
 
-    // Get back opointer to offboard objects
-    offboard = fastdds_obj->return_offboard_obj();
+    auto offboard = mavsdk::Offboard{system};
 
     // Stop offboard thread
     fastdds_obj->quit();
     fastdds_obj->requestInterruption();
     fastdds_obj->wait();
 
-    Offboard::Result offboard_result = offboard_result = offboard->stop();
+    Offboard::Result offboard_result = offboard_result = offboard.stop();
     if (offboard_result != Offboard::Result::Success) {
       console_log("Offboard stop failed");
     } else {

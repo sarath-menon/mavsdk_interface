@@ -64,5 +64,7 @@ private:
 private:
   std::shared_ptr<System> get_system(Mavsdk &mavsdk);
 
+  // status flasg
   bool offb_enabled{};
+  bool initialized{};
 };

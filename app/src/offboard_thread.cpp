@@ -40,7 +40,7 @@ void fastdds_thread::run() { // Blocks until new data is available
     if (QThread::currentThread()->isInterruptionRequested()) {
       return;
     }
-    pos_msg.north_m =  sub::pos_cmd.position.x + x_offset;
+    pos_msg.north_m = sub::pos_cmd.position.x + x_offset;
     pos_msg.east_m = sub::pos_cmd.position.y + y_offset;
     // To account for px4 -z coordinate system (North-East-Down)
     pos_msg.down_m = -sub::pos_cmd.position.z;
@@ -54,5 +54,4 @@ void fastdds_thread::run() { // Blocks until new data is available
 std::unique_ptr<mavsdk::Offboard> fastdds_thread::return_offboard_obj() {
   return std::move(offboard_);
 }
-                                           // data
-  
+// data

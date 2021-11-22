@@ -39,6 +39,4 @@ private:
 
   void circle_forever();
   void lemniscate_forever();
-
-
 };
