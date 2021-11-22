@@ -155,20 +155,20 @@ void MainWindow::on_offboard_start_btn_clicked() {
 
 void MainWindow::on_offboard_stop_btn_clicked() {
 
-  // // Get back opointer to offboard objects
-  // offboard = fastdds_obj->return_offboard_obj();
+  // Get back opointer to offboard objects
+  offboard = fastdds_obj->return_offboard_obj();
 
-  // // Stop offboard thread
-  // fastdds_obj->quit();
-  // fastdds_obj->requestInterruption();
-  // fastdds_obj->wait();
+  // Stop offboard thread
+  fastdds_obj->quit();
+  fastdds_obj->requestInterruption();
+  fastdds_obj->wait();
 
-  // Offboard::Result offboard_result = offboard_result = offboard->stop();
-  // if (offboard_result != Offboard::Result::Success) {
-  //   console_log("Offboard stop failed");
-  // } else {
-  //   console_log("Offboard stopped");
-  // }
+  Offboard::Result offboard_result = offboard_result = offboard->stop();
+  if (offboard_result != Offboard::Result::Success) {
+    console_log("Offboard stop failed");
+  } else {
+    console_log("Offboard stopped");
+  }
 
   //
 }

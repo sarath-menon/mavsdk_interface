@@ -40,25 +40,12 @@ void fastdds_thread::run() { // Blocks until new data is available
     if (QThread::currentThread()->isInterruptionRequested()) {
       return;
     }
+    pos_msg.north_m =  sub::pos_cmd.position.x + x_offset;
+    pos_msg.east_m = sub::pos_cmd.position.y + y_offset;
+    // To account for px4 -z coordinate system (North-East-Down)
+    pos_msg.down_m = -sub::pos_cmd.position.z;
 
-    switch (offb_mode) {
-
-    case offboard_mode::circle:
-      circle_forever();
-      break;
-
-    case offboard_mode::lemniscate:
-      lemniscate_forever();
-      break;
-
-    case offboard_mode::external:
-      // Run external position control
-      external_pos_control();
-      break;
-
-    default:
-      exit(0);
-    }
+    offboard_->set_position_ned(pos_msg);
 
     // qDebug() << "X Position:" << sub::pos_cmd.position.x;
   }
@@ -67,14 +54,5 @@ void fastdds_thread::run() { // Blocks until new data is available
 std::unique_ptr<mavsdk::Offboard> fastdds_thread::return_offboard_obj() {
   return std::move(offboard_);
 }
-
-void fastdds_thread::external_pos_control() { // Wait ill subscriber receives
-                                              // data
-  cmd_sub->listener->wait_for_data_for_ms(100);
-  pos_msg.north_m = sub::pos_cmd.position.x + x_offset;
-  pos_msg.east_m = sub::pos_cmd.position.y + y_offset;
-  // To account for px4 -z coordinate system (North-East-Down)
-  pos_msg.down_m = -sub::pos_cmd.position.z;
-
-  offboard_->set_position_ned(pos_msg);
-}
+                                           // data
+  
