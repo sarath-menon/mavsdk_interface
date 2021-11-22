@@ -36,7 +36,4 @@ private:
   // All offboard modes
   enum class offboard_mode { circle, lemniscate, external };
   offboard_mode offb_mode;
-
-  void circle_forever();
-  void lemniscate_forever();
 };

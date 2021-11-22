@@ -3,8 +3,6 @@ set(SRC_FILES
         src/mainwindow.cpp
         src/mainwindow.ui
         src/offboard_thread.cpp
-        src/circle_mode.cpp
-        src/lemniscate_mode.cpp
 )
 
 set(HEADER_FILES
