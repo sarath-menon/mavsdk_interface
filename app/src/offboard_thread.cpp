@@ -36,10 +36,12 @@ void fastdds_thread::run() { // Blocks until new data is available
 
   forever {
 
+    cmd_sub->listener->wait_for_data_for_ms(100);
     // Check if program close has been requeated. if so, leave loop
     if (QThread::currentThread()->isInterruptionRequested()) {
       return;
     }
+
     pos_msg.north_m = sub::pos_cmd.position.x + x_offset;
     pos_msg.east_m = sub::pos_cmd.position.y + y_offset;
     // To account for px4 -z coordinate system (North-East-Down)
@@ -50,8 +52,3 @@ void fastdds_thread::run() { // Blocks until new data is available
     // qDebug() << "X Position:" << sub::pos_cmd.position.x;
   }
 }
-
-std::unique_ptr<mavsdk::Offboard> fastdds_thread::return_offboard_obj() {
-  return std::move(offboard_);
-}
-// data

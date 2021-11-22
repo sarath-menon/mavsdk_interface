@@ -30,8 +30,8 @@ private:
   mavsdk::Offboard::PositionNedYaw pos_msg{};
 
   // Local position offsets
-  constexpr static float x_offset = 0.5;
-  constexpr static float y_offset = 0.5;
+  constexpr static float x_offset = 0.0;
+  constexpr static float y_offset = 0.0;
 
   // All offboard modes
   enum class offboard_mode { circle, lemniscate, external };
