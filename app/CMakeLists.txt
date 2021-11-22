@@ -2,14 +2,14 @@ set(SRC_FILES
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.ui
-        src/fastdds_thread.cpp
+        src/offboard_thread.cpp
         src/circle_mode.cpp
         src/lemniscate_mode.cpp
 )
 
 set(HEADER_FILES
         include/mainwindow.h
-        include/fastdds_thread.h
+        include/offboard_thread.h
 )
 
 
