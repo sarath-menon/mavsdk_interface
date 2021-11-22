@@ -130,42 +130,59 @@ void MainWindow::on_initialize_btn_clicked() {
 
 void MainWindow::on_offboard_start_btn_clicked() {
 
-  // Set flag to indicate offboard mode is activated
-  offb_activated_flag = true;
+  // check if offboard already enabled
+  if (!offb_enabled) {
+    // Set flag to indicate offboard mode is activated
+    offb_enabled = true;
 
-  // Send it once before starting offboard, otherwise it will be rejected.
-  const Offboard::VelocityNedYaw stay{};
-  // Drone stays in place waiting for commands
-  offboard->set_velocity_ned(stay);
+    // Send it once before starting offboard, otherwise it will be rejected.
+    const Offboard::VelocityNedYaw stay{};
+    // Drone stays in place waiting for commands
+    offboard->set_velocity_ned(stay);
 
-  Offboard::Result offboard_result = offboard->start();
-  if (offboard_result != Offboard::Result::Success) {
-    console_log("Offboard start failed");
-  } else {
-    console_log("Offboard started");
+    Offboard::Result offboard_result = offboard->start();
+    if (offboard_result != Offboard::Result::Success) {
+      console_log("Offboard start failed");
+    } else {
+      console_log("Offboard started");
+
+      // Start offboard thread
+      // Start fastdds thread
+      fastdds_obj = std::make_unique<fastdds_thread>(std::move(offboard));
+      fastdds_obj->start();
+    }
   }
 
-  // Start offboard thread
-  // Start fastdds thread
-  fastdds_obj = std::make_unique<fastdds_thread>(std::move(offboard));
-  fastdds_obj->start();
+  else {
+    console_log("Offboard is already enabled");
+  }
 }
 
 void MainWindow::on_offboard_stop_btn_clicked() {
 
-  // Get back opointer to offboard objects
-  offboard = fastdds_obj->return_offboard_obj();
+  // check if offboard is enabled before stopping
+  if (offb_enabled) { // Set flag to indicate offboard mode is activated
 
-  // Stop offboard thread
-  fastdds_obj->quit();
-  fastdds_obj->requestInterruption();
-  fastdds_obj->wait();
+    // Get back opointer to offboard objects
+    offboard = fastdds_obj->return_offboard_obj();
 
-  Offboard::Result offboard_result = offboard_result = offboard->stop();
-  if (offboard_result != Offboard::Result::Success) {
-    console_log("Offboard stop failed");
+    // Stop offboard thread
+    fastdds_obj->quit();
+    fastdds_obj->requestInterruption();
+    fastdds_obj->wait();
+
+    Offboard::Result offboard_result = offboard_result = offboard->stop();
+    if (offboard_result != Offboard::Result::Success) {
+      console_log("Offboard stop failed");
+    } else {
+      console_log("Offboard stopped");
+    }
+
+    // reset offboard enabled status
+    offb_enabled = false;
+
   } else {
-    console_log("Offboard stopped");
+    console_log("Offboard is already disabled");
   }
 
   //
@@ -189,5 +206,4 @@ void MainWindow::on_mode_selector_currentIndexChanged(int index) {
   default:
     exit(0);
   }
-
 }
