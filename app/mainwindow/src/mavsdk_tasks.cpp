@@ -12,7 +12,7 @@ void MainWindow::arm() {
 
 // disarming
 void MainWindow::disarm() {
-  console_log("Taking off..");
+  console_log("Disarming..");
   const Action::Result arm_result = action->disarm();
 };
 
