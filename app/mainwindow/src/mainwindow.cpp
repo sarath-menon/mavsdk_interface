@@ -5,63 +5,16 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  // Custom logger that logs to app console
-  mavsdk::log::subscribe(
-      [this](mavsdk::log::Level level,   // message severity level
-             const std::string &message, // message text
-             const std::string
-                 &file,  // source file from which the message was sent
-             int line) { // line number in the source file
-        // process the log message in a way you like
-        console_log(message);
+  // set options list
+  this->set_options("app/parameters/port_addresses.yaml");
+  this->set_disp_names();
+  this->set_disp_options();
 
-        // returning true from the callback disables printing the message to
-        // stdout
-        return level < mavsdk::log::Level::Warn;
-      });
-
-  // Add options to port selector combobox
-  ui->port_selector->addItem(xbee_mac);
-  ui->port_selector->addItem(xbee_ubuntu);
-  ui->port_selector->addItem(px4_simulator);
-
-  // Add options to offboard mode selector combobox
-  ui->mode_selector->addItem(circle_mode);
-  ui->mode_selector->addItem(lemniscate_mode);
-  ui->mode_selector->addItem(external_pos_control_mode);
+  // setup console logging
+  this->setup_console_logging();
 }
 
 MainWindow::~MainWindow() { delete ui; }
-
-std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
-  console_log("Waiting to discover system...");
-  auto prom = std::promise<std::shared_ptr<System>>{};
-  auto fut = prom.get_future();
-
-  // We wait for new systems to be discovered, once we find one that has an
-  // autopilot, we decide to use it.
-  mavsdk.subscribe_on_new_system([this, &mavsdk, &prom]() {
-    auto system = mavsdk.systems().back();
-
-    if (system->has_autopilot()) {
-      console_log("Discovered autopilot");
-
-      // Unsubscribe again as we only want to find one system.
-      mavsdk.subscribe_on_new_system(nullptr);
-      prom.set_value(system);
-    }
-  });
-
-  // We usually receive heartbeats at 1Hz, therefore we should find a
-  // system after around 3 seconds max, surely.
-  if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
-    console_log("No autopilot found.");
-    return {};
-  }
-
-  // Get discovered system now.
-  return fut.get();
-}
 
 // logs string to console
 void MainWindow::console_log(const std::string &msg) {
@@ -95,9 +48,13 @@ void MainWindow::on_mode_selector_currentIndexChanged(int index) {
   switch (index) {
   case 0:
     console_log("No offboard mode selected");
+    myProcess->kill();
     break;
   case 1:
     console_log("Offboard mode: Circle forever selected");
+    // start my process
+    myProcess = std::make_unique<QProcess>(parent);
+    myProcess->start(program, arguments);
     break;
   case 2:
     console_log("Offboard mode: Lemnicate forever selected");

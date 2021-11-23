@@ -3,6 +3,9 @@ set(SRC_FILES
         src/mainwindow.cpp
         src/mainwindow.ui
         src/mavsdk_tasks.cpp
+        src/set_values.cpp
+        src/set_disp_names.cpp
+        src/set_disp_options.cpp
 )
 
 set(HEADER_FILES
@@ -39,6 +42,7 @@ threads
 # Other dependencies
 target_link_libraries(mavsdk_gui_interface PRIVATE 
 comm_lib
+yaml-cpp
 )
 
 

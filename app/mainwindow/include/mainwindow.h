@@ -35,7 +35,7 @@ private slots:
 
   void on_mode_selector_currentIndexChanged(int index);
 
-public:
+private:
   void console_log(const std::string &msg);
 
 private:
@@ -48,21 +48,17 @@ private:
   std::unique_ptr<Action> action;
   std::unique_ptr<Offboard> offboard;
 
-  // List of ports to connect to px4
-  const QString xbee_mac = "serial:///dev/tty.usbserial-D309S1F2";
-  const QString xbee_ubuntu = "serial:///dev/ttyUSB0";
-  const QString px4_simulator = "udp://:14540";
-
   // List of offboard modes
   const QString circle_mode = "fly circles forever";
   const QString lemniscate_mode = "fly a lemniscate forever";
   const QString external_pos_control_mode = "external position control";
 
 private:
-  std::unique_ptr<fastdds_thread> fastdds_obj;
+  // maps port type enum to actual port
+  std::map<QString, QString> px4_port{};
 
 private:
-  std::shared_ptr<System> get_system(Mavsdk &mavsdk);
+  std::unique_ptr<fastdds_thread> fastdds_obj;
 
   // status flasg
   bool offb_enabled{};
@@ -81,4 +77,21 @@ private:
 
   void offboard_enable();
   void offboard_disable();
+
+  void setup_console_logging();
+  std::shared_ptr<System> get_system(Mavsdk &mavsdk);
+
+private:
+  void set_options(const std::string path);
+  void set_disp_options();
+  void set_disp_names();
+
+  // qprocess
+private:
+  QObject *parent;
+  QString program = "/Users/sarathmenon/Desktop/eth_soft/code/Controllers/"
+                    "reference_generator/build/apps/circle/circle";
+  QStringList arguments;
+
+  std::unique_ptr<QProcess> myProcess;
 };

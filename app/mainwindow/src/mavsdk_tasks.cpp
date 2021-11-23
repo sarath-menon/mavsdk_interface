@@ -100,7 +100,7 @@ void MainWindow::connect() {
 
     QString mavsdk_port = ui->port_selector->currentText();
     ConnectionResult connection_result =
-        mavsdk->add_any_connection(mavsdk_port.toStdString());
+        mavsdk->add_any_connection(px4_port[mavsdk_port].toStdString());
 
     // Error checking
     if (connection_result != ConnectionResult::Success) {
@@ -131,4 +131,51 @@ void MainWindow::connect() {
   else {
     console_log("Already Initialized");
   }
+}
+
+void MainWindow::setup_console_logging() {
+  // Custom logger that logs to app console
+  mavsdk::log::subscribe(
+      [this](mavsdk::log::Level level,   // message severity level
+             const std::string &message, // message text
+             const std::string
+                 &file,  // source file from which the message was sent
+             int line) { // line number in the source file
+        // process the log message in a way you like
+        console_log(message);
+
+        // returning true from the callback disables printing the message to
+        // stdout
+        return level < mavsdk::log::Level::Warn;
+      });
+}
+
+std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
+  console_log("Waiting to discover system...");
+  auto prom = std::promise<std::shared_ptr<System>>{};
+  auto fut = prom.get_future();
+
+  // We wait for new systems to be discovered, once we find one that has an
+  // autopilot, we decide to use it.
+  mavsdk.subscribe_on_new_system([this, &mavsdk, &prom]() {
+    auto system = mavsdk.systems().back();
+
+    if (system->has_autopilot()) {
+      console_log("Discovered autopilot");
+
+      // Unsubscribe again as we only want to find one system.
+      mavsdk.subscribe_on_new_system(nullptr);
+      prom.set_value(system);
+    }
+  });
+
+  // We usually receive heartbeats at 1Hz, therefore we should find a
+  // system after around 3 seconds max, surely.
+  if (fut.wait_for(seconds(3)) == std::future_status::timeout) {
+    console_log("No autopilot found.");
+    return {};
+  }
+
+  // Get discovered system now.
+  return fut.get();
 }

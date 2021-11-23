@@ -47,13 +47,13 @@
             <number>30</number>
            </property>
            <property name="leftMargin">
-            <number>30</number>
-           </property>
-           <property name="topMargin">
             <number>20</number>
            </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
            <property name="rightMargin">
-            <number>30</number>
+            <number>20</number>
            </property>
            <property name="bottomMargin">
             <number>0</number>
@@ -138,53 +138,183 @@ color: rgb(0, 0, 0);</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <widget class="QPushButton" name="offboard_start_btn">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>50</height>
-              </size>
+            <widget class="QFrame" name="demo_control_frame">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 251, 0);
-color: rgb(0, 0, 0);</string>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="text">
-              <string>Start Offboard Control</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="offboard_stop_btn">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 251, 0);
-color: rgb(0, 0, 0);</string>
-             </property>
-             <property name="text">
-              <string>Stop Offboard Control</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="mode_selector">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(117, 117, 117);</string>
-             </property>
-             <property name="currentText">
-              <string>Select Mode</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>Select Mode</string>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <property name="spacing">
+               <number>0</number>
               </property>
-             </item>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="frame_2">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <widget class="QPushButton" name="offboard_start_btn">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: rgb(255, 251, 0);
+color: rgb(0, 0, 0);</string>
+                   </property>
+                   <property name="text">
+                    <string>Start Offboard Control</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="offboard_stop_btn">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: rgb(255, 251, 0);
+color: rgb(0, 0, 0);</string>
+                   </property>
+                   <property name="text">
+                    <string>Stop Offboard Control</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="font">
+                 <font>
+                  <pointsize>18</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(0, 249, 0);</string>
+                </property>
+                <property name="text">
+                 <string>Demo Panel</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="mode_selector">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(117, 117, 117);</string>
+                </property>
+                <property name="currentText">
+                 <string>Select Demo</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Select Demo</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="demo_btn_frame">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                 <item>
+                  <widget class="QPushButton" name="offboard_stop_btn_3">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: rgb(255, 251, 0);
+color: rgb(0, 0, 0);</string>
+                   </property>
+                   <property name="text">
+                    <string>Start Demo</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="offboard_stop_btn_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: rgb(255, 251, 0);
+color: rgb(0, 0, 0);</string>
+                   </property>
+                   <property name="text">
+                    <string>Stop Demo</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>

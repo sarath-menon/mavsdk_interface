@@ -1,0 +1,5 @@
+# px4 connection ports
+
+fly_circle: serial:///dev/tty.usbserial-D309S1F2
+fly_lemniscate: serial:///dev/ttyUSB0
+px4_sim_port: udp://:14540

@@ -1,0 +1,5 @@
+# px4 connection ports
+
+mac_xbee_port: serial:///dev/tty.usbserial-D309S1F2
+linux_xbee_port: serial:///dev/ttyUSB0
+px4_sim_port: udp://:14540
