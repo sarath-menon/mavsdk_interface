@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.1, 2021-11-22T21:40:59. -->
+<!-- Written by QtCreator 5.0.1, 2021-11-23T17:19:16. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -301,7 +301,7 @@
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/sarathmenon/Desktop/eth_soft/code/gui user interface/build-mavsdk_test-Qt_6_2_0_for_macOS-Debug/app</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/sarathmenon/Desktop/eth_soft/code/gui user interface/build-mavsdk_test-Qt_6_2_0_for_macOS-Debug/app/mainwindow</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
