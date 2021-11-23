@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.1, 2021-11-18T17:13:13. -->
+<!-- Written by QtCreator 5.0.1, 2021-11-22T21:40:59. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -299,7 +299,6 @@
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">mavsdk_gui_interface</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
-    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/sarathmenon/Desktop/eth_soft/code/gui user interface/build-mavsdk_test-Qt_6_2_0_for_macOS-Debug/app</value>
