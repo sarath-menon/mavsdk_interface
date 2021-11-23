@@ -1,5 +1,21 @@
 #pragma once
-#include "include_helper.h"
+#pragma once
+
+#include <QDebug>
+#include <QFile>
+#include <QMainWindow>
+#include <QThread>
+#include <chrono>
+#include <cstdint>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/offboard/offboard.h>
+#include <memory>
+#include <sub_variables.h>
+#include <thread>
+
+// Fastdds
+#include "default_participant.h"
+#include "default_subscriber.h"
 
 #include <QThread>
 

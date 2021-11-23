@@ -19,5 +19,4 @@
 // Fastdds
 #include "default_participant.h"
 #include "default_subscriber.h"
-#include "fastdds_sub_variables.h"
 #include "offboard_thread.h"
