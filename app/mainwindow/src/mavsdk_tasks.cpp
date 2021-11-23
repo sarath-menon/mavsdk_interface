@@ -93,8 +93,8 @@ void MainWindow::offboard_disable() {
 };
 
 void MainWindow::connect() {
-  // check if already initialized
-  if (!initialized) {
+  // check if already connected
+  if (!connected) {
     // Create mavsdk object
     mavsdk = std::make_unique<Mavsdk>();
 
@@ -113,7 +113,7 @@ void MainWindow::connect() {
       system = get_system(*mavsdk);
 
       // set intitialized status
-      initialized = true;
+      connected = true;
 
       // Error checking
       if (!system) {

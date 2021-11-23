@@ -60,9 +60,9 @@ private:
 private:
   std::unique_ptr<fastdds_thread> fastdds_obj;
 
-  // status flasg
+  // status flag
   bool offb_enabled{};
-  bool initialized{};
+  bool connected{};
 
   // mavsdk tasks
 private:
