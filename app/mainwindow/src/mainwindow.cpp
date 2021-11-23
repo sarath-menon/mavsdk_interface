@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <mavsdk/log_callback.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -64,145 +63,32 @@ std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
   return fut.get();
 }
 
-void MainWindow::on_arm_btn_clicked() {
-  console_log("Arming...");
-  const Action::Result arm_result = action->arm();
-  if (arm_result != Action::Result::Success) {
-    console_log("Arming failed: ");
-  }
-}
-
-void MainWindow::on_disarm_btn_clicked() {
-  console_log("Taking off..");
-  const Action::Result arm_result = action->disarm();
-}
-
-void MainWindow::on_takeoff_btn_clicked() {
-  const Action::Result takeoff_result = action->takeoff();
-  if (takeoff_result != Action::Result::Success) {
-    console_log("Takeoff failed");
-  }
-}
-
-void MainWindow::on_land_btn_clicked() {
-  console_log("Landing...");
-
-  const Action::Result land_result = action->land();
-  if (land_result != Action::Result::Success) {
-    console_log("Land failed");
-  }
-}
-
 // logs string to console
-
 void MainWindow::console_log(const std::string &msg) {
   auto msg_qt = QString::fromStdString(msg);
   ui->console->append(msg_qt);
 }
 
+void MainWindow::on_arm_btn_clicked() { this->arm(); }
+
+void MainWindow::on_disarm_btn_clicked() { this->disarm(); }
+
+void MainWindow::on_takeoff_btn_clicked() {
+  this->arm();
+  this->takeoff();
+}
+
+void MainWindow::on_land_btn_clicked() {
+  this->offboard_disable();
+  this->land();
+}
+
 // Connect to mavsd instance selected in dropdown
-void MainWindow::on_initialize_btn_clicked() {
-  // check if already initialized
-  if (!initialized) {
-    // Create mavsdk object
-    mavsdk = std::make_unique<Mavsdk>();
+void MainWindow::on_connect_btn_clicked() { this->connect(); }
 
-    QString mavsdk_port = ui->port_selector->currentText();
-    ConnectionResult connection_result =
-        mavsdk->add_any_connection(mavsdk_port.toStdString());
+void MainWindow::on_offboard_start_btn_clicked() { this->offboard_enable(); }
 
-    // Error checking
-    if (connection_result != ConnectionResult::Success) {
-      console_log("Connection failed:");
-    }
-
-    else {
-
-      // Get pointer to system from mavsdk obj
-      system = get_system(*mavsdk);
-
-      // set intitialized status
-      initialized = true;
-
-      // Error checking
-      if (!system) {
-        console_log("Couldn't get system");
-      }
-
-      else {
-        // Create telemetry object
-        telemetry = std::make_unique<Telemetry>(system);
-        action = std::make_unique<Action>(system);
-      }
-    }
-  }
-
-  else {
-    console_log("Already Initialized");
-  }
-}
-
-void MainWindow::on_offboard_start_btn_clicked() {
-
-  // check if offboard already enabled
-  if (!offb_enabled) {
-    // Set flag to indicate offboard mode is activated
-    offb_enabled = true;
-
-    auto offboard = mavsdk::Offboard{system};
-
-    // Send it once before starting offboard, otherwise it will be rejected.
-    const Offboard::VelocityNedYaw stay{};
-    // Drone stays in place waiting for commands
-    offboard.set_velocity_ned(stay);
-
-    Offboard::Result offboard_result = offboard.start();
-    if (offboard_result != Offboard::Result::Success) {
-      console_log("Offboard start failed");
-    } else {
-      console_log("Offboard started");
-
-      // Start offboard thread
-      // Start fastdds thread
-      fastdds_obj =
-          std::make_unique<fastdds_thread>(std::make_unique<Offboard>(system));
-      fastdds_obj->start();
-    }
-  }
-
-  else {
-    console_log("Offboard is already enabled");
-  }
-}
-
-void MainWindow::on_offboard_stop_btn_clicked() {
-
-  // check if offboard is enabled before stopping
-  if (offb_enabled) { // Set flag to indicate offboard mode is activated
-
-    auto offboard = mavsdk::Offboard{system};
-
-    // Stop offboard thread
-    fastdds_obj->quit();
-    fastdds_obj->requestInterruption();
-    fastdds_obj->wait();
-
-    Offboard::Result offboard_result = offboard_result = offboard.stop();
-    if (offboard_result != Offboard::Result::Success) {
-      console_log("Offboard stop failed");
-    } else {
-      console_log("Offboard stopped");
-    }
-
-    // reset offboard enabled status
-    offb_enabled = false;
-
-  } else {
-    console_log("Offboard is already disabled");
-  }
-
-  //
-}
+void MainWindow::on_offboard_stop_btn_clicked() { this->offboard_disable(); }
 
 void MainWindow::on_mode_selector_currentIndexChanged(int index) {
 

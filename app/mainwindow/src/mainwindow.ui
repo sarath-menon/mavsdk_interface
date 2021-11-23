@@ -251,7 +251,7 @@ background-color: rgb(255, 255, 255);</string>
             <number>15</number>
            </property>
            <item>
-            <widget class="QPushButton" name="initialize_btn">
+            <widget class="QPushButton" name="connect_btn">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -263,7 +263,7 @@ background-color: rgb(255, 255, 255);</string>
 color: rgb(0, 0, 0);</string>
              </property>
              <property name="text">
-              <string>Initialize</string>
+              <string>Connect</string>
              </property>
             </widget>
            </item>
@@ -297,7 +297,7 @@ color: rgb(0, 0, 0);</string>
                  <string notr="true">color: rgb(0, 249, 0);</string>
                 </property>
                 <property name="text">
-                 <string>Connnection port</string>
+                 <string>Port</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>

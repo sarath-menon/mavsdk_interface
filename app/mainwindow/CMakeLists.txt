@@ -2,6 +2,7 @@ set(SRC_FILES
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.ui
+        src/mavsdk_tasks.cpp
 )
 
 set(HEADER_FILES

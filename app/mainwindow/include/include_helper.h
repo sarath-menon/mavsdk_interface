@@ -9,10 +9,6 @@
 #include <cstdint>
 #include <future>
 #include <iostream>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/offboard/offboard.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <memory>
 #include <thread>
 
@@ -20,3 +16,11 @@
 #include "default_participant.h"
 #include "default_subscriber.h"
 #include "offboard_thread.h"
+
+// MAVSDK
+
+#include <mavsdk/log_callback.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/offboard/offboard.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>

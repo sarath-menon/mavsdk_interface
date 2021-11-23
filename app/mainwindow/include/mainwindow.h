@@ -27,7 +27,7 @@ private slots:
 
   void on_land_btn_clicked();
 
-  void on_initialize_btn_clicked();
+  void on_connect_btn_clicked();
 
   void on_offboard_start_btn_clicked();
 
@@ -67,4 +67,18 @@ private:
   // status flasg
   bool offb_enabled{};
   bool initialized{};
+
+  // mavsdk tasks
+private:
+  // connect to px4 and initialize all communication
+  void connect();
+
+  void arm();
+  void disarm();
+
+  void takeoff();
+  void land();
+
+  void offboard_enable();
+  void offboard_disable();
 };
