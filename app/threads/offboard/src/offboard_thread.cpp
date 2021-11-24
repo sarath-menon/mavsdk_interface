@@ -2,7 +2,7 @@
 #include <qglobal.h>
 #include <qthread.h>
 
-fastdds_thread::fastdds_thread(DefaultParticipant *dp,
+OffboardThread::OffboardThread(DefaultParticipant *dp,
                                mavsdk::Offboard *offboard,
                                mavsdk::Telemetry *telemetry, QObject *parent)
     : QThread(parent) {
@@ -34,12 +34,12 @@ fastdds_thread::fastdds_thread(DefaultParticipant *dp,
   sub::pos_cmd.position.z = 1.5;
 }
 
-fastdds_thread::~fastdds_thread() { // Fastdds
+OffboardThread::~OffboardThread() { // Fastdds
   delete cmd_sub;
   delete pos_pub;
 }
 
-void fastdds_thread::run() { // Blocks until new data is available
+void OffboardThread::run() { // Blocks until new data is available
 
   // auto pos_publisher = std::async(std::launch::async, X(), 43);
 
@@ -65,7 +65,7 @@ void fastdds_thread::run() { // Blocks until new data is available
 }
 
 // publish position
-void fastdds_thread::publish_position() {
+void OffboardThread::publish_position() {
   std::cout << "Attitude euler: " << telemetry_->position_velocity_ned()
             << std::endl;
 };

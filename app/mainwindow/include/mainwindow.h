@@ -64,7 +64,7 @@ private:
 
   // threads
 private:
-  std::unique_ptr<fastdds_thread> fastdds_obj;
+  std::unique_ptr<OffboardThread> offboard_thread;
   // std::unique_ptr<PositionPublisher> pos_pub_thread;
 
   // status flag

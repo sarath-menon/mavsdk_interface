@@ -55,9 +55,9 @@ void MainWindow::offboard_enable() {
 
       // Start offboard thread
       // Start fastdds thread
-      fastdds_obj = std::make_unique<fastdds_thread>(dp.get(), offboard.get(),
-                                                     telemetry.get());
-      fastdds_obj->start();
+      offboard_thread = std::make_unique<OffboardThread>(
+          dp.get(), offboard.get(), telemetry.get());
+      offboard_thread->start();
 
       // // If simulation, start position publisher
       // pos_pub_thread = std::make_unique<PositionPublisher>(
@@ -75,9 +75,9 @@ void MainWindow::offboard_disable() {
   if (offb_enabled) { // Set flag to indicate offboard mode is activated
 
     // Stop offboard thread
-    fastdds_obj->quit();
-    fastdds_obj->requestInterruption();
-    fastdds_obj->wait();
+    offboard_thread->quit();
+    offboard_thread->requestInterruption();
+    offboard_thread->wait();
 
     Offboard::Result offboard_result = offboard->stop();
     if (offboard_result != Offboard::Result::Success) {

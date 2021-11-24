@@ -22,14 +22,14 @@
 
 #include <QThread>
 
-class fastdds_thread : public QThread {
+class OffboardThread : public QThread {
   Q_OBJECT
 
 public:
-  explicit fastdds_thread(DefaultParticipant *dp, mavsdk::Offboard *offboard,
+  explicit OffboardThread(DefaultParticipant *dp, mavsdk::Offboard *offboard,
                           mavsdk::Telemetry *telemetry,
                           QObject *parent = nullptr);
-  ~fastdds_thread();
+  ~OffboardThread();
 
   void run();
 
