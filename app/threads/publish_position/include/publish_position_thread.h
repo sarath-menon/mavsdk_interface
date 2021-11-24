@@ -20,14 +20,14 @@
 
 #include <QThread>
 
-class pos_pub_thread : public QThread {
+class PositionPublisher : public QThread {
   Q_OBJECT
 
 public:
-  explicit pos_pub_thread(DefaultParticipant *dp,
-                          std::shared_ptr<mavsdk::Telemetry> telemetry,
-                          QObject *parent = nullptr);
-  ~pos_pub_thread();
+  explicit PositionPublisher(DefaultParticipant *dp,
+                             std::unique_ptr<mavsdk::Telemetry> telemetry,
+                             QObject *parent = nullptr);
+  ~PositionPublisher();
 
   void run();
 
@@ -42,13 +42,5 @@ private:
 
   // mavsdk
 private:
-  std::shared_ptr<mavsdk::Telemetry> telemetry_;
-
-  // Local position offsets
-  constexpr static float x_offset = 0.0;
-  constexpr static float y_offset = 0.0;
-
-  // All offboard modes
-  enum class offboard_mode { circle, lemniscate, external };
-  offboard_mode offb_mode;
+  std::unique_ptr<mavsdk::Telemetry> telemetry_;
 };

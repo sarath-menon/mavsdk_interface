@@ -11,6 +11,7 @@
 #include <future>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <thread>
 
 // Fastdds
@@ -19,7 +20,7 @@
 
 // Threads
 #include "offboard_thread.h"
-#include "publish_position_thread.h"
+// #include "publish_position_thread.h"
 
 // MAVSDK
 #include <mavsdk/log_callback.h>

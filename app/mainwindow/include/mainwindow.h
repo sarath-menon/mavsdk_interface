@@ -62,10 +62,13 @@ private:
   // Create doamin participant
   std::unique_ptr<DefaultParticipant> dp;
 
+  // threads
 private:
   std::unique_ptr<fastdds_thread> fastdds_obj;
+  // std::unique_ptr<PositionPublisher> pos_pub_thread;
 
   // status flag
+private:
   bool offb_enabled{};
   bool connected{};
 

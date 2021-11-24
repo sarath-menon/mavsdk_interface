@@ -18,7 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
   this->setup_console_logging();
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+  // // Stop position publisher thread
+  // pos_pub_thread->quit();
+  // pos_pub_thread->requestInterruption();
+  // pos_pub_thread->wait();
+
+  delete ui;
+}
 
 // logs string to console
 void MainWindow::console_log(const std::string &msg) {

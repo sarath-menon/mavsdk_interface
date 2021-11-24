@@ -4,6 +4,7 @@
 
 fastdds_thread::fastdds_thread(DefaultParticipant *dp,
                                std::unique_ptr<mavsdk::Offboard> offboard,
+                               std::unique_ptr<mavsdk::Telemetry> telemetry,
                                QObject *parent)
     : QThread(parent) {
 
@@ -16,11 +17,17 @@ fastdds_thread::fastdds_thread(DefaultParticipant *dp,
   cmd_sub = new DDSSubscriber(idl_msg::QuadPositionCmdPubSubType(),
                               &sub::pos_cmd, "pos_cmd", dp_->participant());
 
-  // initialize  subscriberDefaultParticipant
+  // Create  subscriber
+  pos_pub = new DDSPublisher(idl_msg::MocapPubSubType(), "mocap_pose",
+                             dp_->participant());
+
+  // initialize
   cmd_sub->init();
+  pos_pub->init();
   // mavsdk ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   offboard_ = std::move(offboard);
+  telemetry_ = std::move(telemetry);
 
   // Set intial position
   sub::pos_cmd.position.x = 0.0;
@@ -30,9 +37,12 @@ fastdds_thread::fastdds_thread(DefaultParticipant *dp,
 
 fastdds_thread::~fastdds_thread() { // Fastdds
   delete cmd_sub;
+  delete pos_pub;
 }
 
 void fastdds_thread::run() { // Blocks until new data is available
+
+  // auto pos_publisher = std::async(std::launch::async, X(), 43);
 
   forever {
 
@@ -49,6 +59,14 @@ void fastdds_thread::run() { // Blocks until new data is available
 
     offboard_->set_position_ned(pos_msg);
 
+    publish_position();
+
     // qDebug() << "X Position:" << sub::pos_cmd.position.x;
   }
 }
+
+// publish position
+void fastdds_thread::publish_position() {
+  std::cout << "Attitude euler: " << telemetry_->position_velocity_ned()
+            << std::endl;
+};

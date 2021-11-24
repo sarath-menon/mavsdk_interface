@@ -57,8 +57,14 @@ void MainWindow::offboard_enable() {
       // Start offboard thread
       // Start fastdds thread
       fastdds_obj = std::make_unique<fastdds_thread>(
-          dp.get(), std::make_unique<Offboard>(system));
+          dp.get(), std::make_unique<Offboard>(system),
+          std::make_unique<Telemetry>(system));
       fastdds_obj->start();
+
+      // // If simulation, start position publisher
+      // pos_pub_thread = std::make_unique<PositionPublisher>(
+      //     dp.get(), std::move(std::make_unique<Telemetry>(system)));
+      // // pos_pub_thread->start();
     }
   } else {
     console_log("Offboard is already enabled");
@@ -179,9 +185,3 @@ std::shared_ptr<System> MainWindow::get_system(Mavsdk &mavsdk) {
   // Get discovered system now.
   return fut.get();
 }
-
-// publish position
-void MainWindow::publish_position() {
-  std::cout << "Attitude euler: " << telemetry->position_velocity_ned()
-            << std::endl;
-};
