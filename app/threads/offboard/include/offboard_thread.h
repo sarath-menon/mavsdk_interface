@@ -13,6 +13,7 @@
 #include <memory>
 #include <sub_variables.h>
 #include <thread>
+
 // Fastdds
 #include "MocapPubSubTypes.h"
 #include "default_participant.h"
@@ -21,6 +22,10 @@
 #include "sensor_msgs/msgs/Mocap.h"
 
 #include <QThread>
+
+namespace threadflags {
+inline std::atomic_bool pos_pub{};
+}
 
 class OffboardThread : public QThread {
   Q_OBJECT
@@ -59,5 +64,5 @@ private:
   enum class offboard_mode { circle, lemniscate, external };
   offboard_mode offb_mode;
 
-  void publish_position();
+  // void publish_position();
 };

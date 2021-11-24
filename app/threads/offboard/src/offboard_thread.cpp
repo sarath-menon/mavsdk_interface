@@ -7,8 +7,11 @@ OffboardThread::OffboardThread(DefaultParticipant *dp,
                                mavsdk::Telemetry *telemetry, QObject *parent)
     : QThread(parent) {
 
-  // Fastdds ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+  // set thread flag to false
+  threadflags::pos_pub = false;
 
+  // Fastdds
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
   dp_ = dp;
   // Create fastdds objects
 
@@ -39,15 +42,32 @@ OffboardThread::~OffboardThread() { // Fastdds
   delete pos_pub;
 }
 
+// publish position
+void publish_position(mavsdk::Telemetry *telemetry) {
+  while (!threadflags::pos_pub) {
+    std::cout << "Attitude euler: " << telemetry->position_velocity_ned()
+              << std::endl;
+
+    // Publish at 100 Hz
+    QThread::msleep(10);
+  }
+};
+
 void OffboardThread::run() { // Blocks until new data is available
 
-  // auto pos_publisher = std::async(std::launch::async, X(), 43);
+  auto pos_publisher =
+      std::async(std::launch::async, &publish_position, telemetry_);
 
   forever {
 
     cmd_sub->listener->wait_for_data_for_ms(100);
     // Check if program close has been requeated. if so, leave loop
     if (QThread::currentThread()->isInterruptionRequested()) {
+
+      threadflags::pos_pub = true;
+      // wait
+      QThread::msleep(10);
+
       return;
     }
 
@@ -58,14 +78,8 @@ void OffboardThread::run() { // Blocks until new data is available
 
     offboard_->set_position_ned(pos_msg);
 
-    publish_position();
+    // publish_position();
 
     // qDebug() << "X Position:" << sub::pos_cmd.position.x;
   }
 }
-
-// publish position
-void OffboardThread::publish_position() {
-  std::cout << "Attitude euler: " << telemetry_->position_velocity_ned()
-            << std::endl;
-};
