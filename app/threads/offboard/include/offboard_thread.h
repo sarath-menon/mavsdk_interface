@@ -26,8 +26,7 @@ class fastdds_thread : public QThread {
   Q_OBJECT
 
 public:
-  explicit fastdds_thread(DefaultParticipant *dp,
-                          std::unique_ptr<mavsdk::Offboard> offboard,
+  explicit fastdds_thread(DefaultParticipant *dp, mavsdk::Offboard *offboard,
                           mavsdk::Telemetry *telemetry,
                           QObject *parent = nullptr);
   ~fastdds_thread();
@@ -47,7 +46,7 @@ private:
 
   // mavsdk
 private:
-  std::unique_ptr<mavsdk::Offboard> offboard_;
+  mavsdk::Offboard *offboard_;
   mavsdk::Telemetry *telemetry_;
 
   mavsdk::Offboard::PositionNedYaw pos_msg{};

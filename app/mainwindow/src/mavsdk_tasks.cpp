@@ -39,14 +39,12 @@ void MainWindow::offboard_enable() {
   // check if offboard already enabled
   if (!offb_enabled) {
 
-    auto offboard = mavsdk::Offboard{system};
-
     // Send it once before starting offboard, otherwise it will be rejected.
     const Offboard::VelocityNedYaw stay{};
     // Drone stays in place waiting for commands
-    offboard.set_velocity_ned(stay);
+    offboard->set_velocity_ned(stay);
 
-    Offboard::Result offboard_result = offboard.start();
+    Offboard::Result offboard_result = offboard->start();
     if (offboard_result != Offboard::Result::Success) {
       console_log("Offboard start failed");
     } else {
@@ -57,8 +55,8 @@ void MainWindow::offboard_enable() {
 
       // Start offboard thread
       // Start fastdds thread
-      fastdds_obj = std::make_unique<fastdds_thread>(
-          dp.get(), std::make_unique<Offboard>(system), telemetry.get());
+      fastdds_obj = std::make_unique<fastdds_thread>(dp.get(), offboard.get(),
+                                                     telemetry.get());
       fastdds_obj->start();
 
       // // If simulation, start position publisher
@@ -76,14 +74,12 @@ void MainWindow::offboard_disable() {
   // check if offboard is enabled before stopping
   if (offb_enabled) { // Set flag to indicate offboard mode is activated
 
-    auto offboard = mavsdk::Offboard{system};
-
     // Stop offboard thread
     fastdds_obj->quit();
     fastdds_obj->requestInterruption();
     fastdds_obj->wait();
 
-    Offboard::Result offboard_result = offboard_result = offboard.stop();
+    Offboard::Result offboard_result = offboard->stop();
     if (offboard_result != Offboard::Result::Success) {
       console_log("Offboard stop failed");
     } else {
@@ -129,6 +125,7 @@ void MainWindow::connect() {
         // Create telemetry object
         telemetry = std::make_unique<Telemetry>(system);
         action = std::make_unique<Action>(system);
+        offboard = std::make_unique<Offboard>(system);
       }
     }
   }
