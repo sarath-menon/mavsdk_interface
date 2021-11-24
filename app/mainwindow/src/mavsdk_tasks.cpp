@@ -38,8 +38,6 @@ void MainWindow::land() {
 void MainWindow::offboard_enable() {
   // check if offboard already enabled
   if (!offb_enabled) {
-    // Set flag to indicate offboard mode is activated
-    offb_enabled = true;
 
     auto offboard = mavsdk::Offboard{system};
 
@@ -54,11 +52,13 @@ void MainWindow::offboard_enable() {
     } else {
       console_log("Offboard started");
 
+      // Set flag to indicate offboard mode is activated
+      offb_enabled = true;
+
       // Start offboard thread
       // Start fastdds thread
       fastdds_obj = std::make_unique<fastdds_thread>(
-          dp.get(), std::make_unique<Offboard>(system),
-          std::make_unique<Telemetry>(system));
+          dp.get(), std::make_unique<Offboard>(system), telemetry.get());
       fastdds_obj->start();
 
       // // If simulation, start position publisher
@@ -88,10 +88,9 @@ void MainWindow::offboard_disable() {
       console_log("Offboard stop failed");
     } else {
       console_log("Offboard stopped");
+      // reset offboard enabled status
+      offb_enabled = false;
     }
-
-    // reset offboard enabled status
-    offb_enabled = false;
 
   } else {
     console_log("Offboard is already disabled");

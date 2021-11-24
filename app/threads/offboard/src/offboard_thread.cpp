@@ -4,8 +4,7 @@
 
 fastdds_thread::fastdds_thread(DefaultParticipant *dp,
                                std::unique_ptr<mavsdk::Offboard> offboard,
-                               std::unique_ptr<mavsdk::Telemetry> telemetry,
-                               QObject *parent)
+                               mavsdk::Telemetry *telemetry, QObject *parent)
     : QThread(parent) {
 
   // Fastdds ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
@@ -27,7 +26,7 @@ fastdds_thread::fastdds_thread(DefaultParticipant *dp,
   // mavsdk ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   offboard_ = std::move(offboard);
-  telemetry_ = std::move(telemetry);
+  telemetry_ = telemetry;
 
   // Set intial position
   sub::pos_cmd.position.x = 0.0;
