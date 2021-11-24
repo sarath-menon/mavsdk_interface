@@ -10,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
   this->set_disp_names();
   this->set_disp_options();
 
+  // Create fastdds objects
+  // Create domain participant
+  dp = std::make_unique<DefaultParticipant>(0, "mavsdk_gui_interface");
+
   // setup console logging
   this->setup_console_logging();
 }

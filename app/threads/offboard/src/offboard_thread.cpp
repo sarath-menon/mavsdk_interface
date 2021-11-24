@@ -2,19 +2,19 @@
 #include <qglobal.h>
 #include <qthread.h>
 
-fastdds_thread::fastdds_thread(std::unique_ptr<mavsdk::Offboard> offboard,
+fastdds_thread::fastdds_thread(DefaultParticipant *dp,
+                               std::unique_ptr<mavsdk::Offboard> offboard,
                                QObject *parent)
     : QThread(parent) {
 
   // Fastdds ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 
+  dp_ = dp;
   // Create fastdds objects
-  // Create domain participant
-  dp = std::make_unique<DefaultParticipant>(0, "mavsdk_gui_interface");
 
   // Create  subscriber
   cmd_sub = new DDSSubscriber(idl_msg::QuadPositionCmdPubSubType(),
-                              &sub::pos_cmd, "pos_cmd", dp->participant());
+                              &sub::pos_cmd, "pos_cmd", dp_->participant());
 
   // initialize  subscriberDefaultParticipant
   cmd_sub->init();

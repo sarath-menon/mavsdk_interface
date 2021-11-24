@@ -16,7 +16,10 @@
 // Fastdds
 #include "default_participant.h"
 #include "default_subscriber.h"
+
+// Threads
 #include "offboard_thread.h"
+#include "publish_position_thread.h"
 
 // MAVSDK
 #include <mavsdk/log_callback.h>

@@ -57,6 +57,11 @@ private:
   // maps port type enum to actual port
   std::map<QString, QString> px4_port{};
 
+  // fastdds
+private:
+  // Create doamin participant
+  std::unique_ptr<DefaultParticipant> dp;
+
 private:
   std::unique_ptr<fastdds_thread> fastdds_obj;
 
@@ -79,7 +84,10 @@ private:
   void offboard_disable();
 
   void setup_console_logging();
-  std::shared_ptr<System> get_system(Mavsdk &mavsdk);
+  void publish_position();
+  std::shared_ptr<System> get_system(
+
+      Mavsdk &mavsdk);
 
 private:
   void set_options(const std::string path);
