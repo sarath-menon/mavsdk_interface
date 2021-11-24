@@ -2,26 +2,24 @@
 #include <qglobal.h>
 #include <qthread.h>
 
-OffboardThread::OffboardThread(DefaultParticipant *dp,
-                               mavsdk::Offboard *offboard,
+OffboardThread::OffboardThread(mavsdk::Offboard *offboard,
                                mavsdk::Telemetry *telemetry, QObject *parent)
     : QThread(parent) {
 
   // set thread flag to false
-  threadflags::pos_pub = false;
+  pos_pub_::pos_pub = false;
 
   // Fastdds
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-  dp_ = dp;
-  // Create fastdds objects
+  // Create domain participant
+  dp = std::make_unique<DefaultParticipant>(0, "mavsdk_gui_interface");
 
   // Create  subscriber
   cmd_sub = new DDSSubscriber(idl_msg::QuadPositionCmdPubSubType(),
-                              &sub::pos_cmd, "pos_cmd", dp_->participant());
+                              &sub::pos_cmd, "pos_cmd", dp->participant());
 
   // Create  subscriber
   pos_pub = new DDSPublisher(idl_msg::MocapPubSubType(), "mocap_pose",
-                             dp_->participant());
+                             dp->participant());
 
   // initialize
   cmd_sub->init();
@@ -43,10 +41,21 @@ OffboardThread::~OffboardThread() { // Fastdds
 }
 
 // publish position
-void publish_position(mavsdk::Telemetry *telemetry) {
-  while (!threadflags::pos_pub) {
-    std::cout << "Attitude euler: " << telemetry->position_velocity_ned()
-              << std::endl;
+void publish_position(mavsdk::Telemetry *telemetry, DDSPublisher *pos_pub) {
+  while (!pos_pub_::pos_pub) {
+
+    pos_pub_::mocap_msg.pose.position.x =
+        telemetry->position_velocity_ned().position.north_m;
+    pos_pub_::mocap_msg.pose.position.y =
+        telemetry->position_velocity_ned().position.east_m;
+    pos_pub_::mocap_msg.pose.position.z =
+        -telemetry->position_velocity_ned().position.down_m;
+
+    std::cout << "Position: " << pos_pub_::mocap_msg.pose.position.x << '\t'
+              << pos_pub_::mocap_msg.pose.position.y << '\t'
+              << pos_pub_::mocap_msg.pose.position.z << std::endl;
+
+    pos_pub->publish(pos_pub_::mocap_msg);
 
     // Publish at 100 Hz
     QThread::msleep(10);
@@ -56,7 +65,7 @@ void publish_position(mavsdk::Telemetry *telemetry) {
 void OffboardThread::run() { // Blocks until new data is available
 
   auto pos_publisher =
-      std::async(std::launch::async, &publish_position, telemetry_);
+      std::async(std::launch::async, &publish_position, telemetry_, pos_pub);
 
   forever {
 
@@ -64,7 +73,7 @@ void OffboardThread::run() { // Blocks until new data is available
     // Check if program close has been requeated. if so, leave loop
     if (QThread::currentThread()->isInterruptionRequested()) {
 
-      threadflags::pos_pub = true;
+      pos_pub_::pos_pub = true;
       // wait
       QThread::msleep(10);
 

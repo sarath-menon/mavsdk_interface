@@ -32,18 +32,18 @@ void PositionPublisher::run() { // Blocks until new data is available
       return;
     }
 
-    // pos_msg.pose.position.x =
-    //     telemetry_->position_velocity_ned().position.north_m;
-    // pos_msg.pose.position.y =
-    //     -telemetry_->position_velocity_ned().position.east_m;
-    // pos_msg.pose.position.z =
-    //     -telemetry_->position_velocity_ned().position.down_m;
+    pos_msg.pose.position.x =
+        telemetry_->position_velocity_ned().position.north_m;
+    pos_msg.pose.position.y =
+        -telemetry_->position_velocity_ned().position.east_m;
+    pos_msg.pose.position.z =
+        -telemetry_->position_velocity_ned().position.down_m;
 
-    // std::cout << "Position: " << pos_msg.pose.position.x << '\t'
-    //           << pos_msg.pose.position.y << '\t' << pos_msg.pose.position.z
-    //           << std::endl;
+    std::cout << "Position: " << pos_msg.pose.position.x << '\t'
+              << pos_msg.pose.position.y << '\t' << pos_msg.pose.position.z
+              << std::endl;
 
-    // pos_pub->publish(pos_msg);
+    pos_pub->publish(pos_msg);
 
     // // Publish at 100Hz
     // QThread::msleep(10);

@@ -55,8 +55,8 @@ void MainWindow::offboard_enable() {
 
       // Start offboard thread
       // Start fastdds thread
-      offboard_thread = std::make_unique<OffboardThread>(
-          dp.get(), offboard.get(), telemetry.get());
+      offboard_thread =
+          std::make_unique<OffboardThread>(offboard.get(), telemetry.get());
       offboard_thread->start();
 
       // // If simulation, start position publisher

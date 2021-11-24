@@ -23,15 +23,18 @@
 
 #include <QThread>
 
-namespace threadflags {
+namespace pos_pub_ {
 inline std::atomic_bool pos_pub{};
-}
+
+// mocap psg
+inline cpp_msg::Mocap mocap_msg{};
+} // namespace pos_pub_
 
 class OffboardThread : public QThread {
   Q_OBJECT
 
 public:
-  explicit OffboardThread(DefaultParticipant *dp, mavsdk::Offboard *offboard,
+  explicit OffboardThread(mavsdk::Offboard *offboard,
                           mavsdk::Telemetry *telemetry,
                           QObject *parent = nullptr);
   ~OffboardThread();
@@ -40,7 +43,8 @@ public:
 
   // fastdds objects
 private:
-  DefaultParticipant *dp_;
+  // Create doamin participant
+  std::unique_ptr<DefaultParticipant> dp;
 
   // Motion capture data subscriber
   DDSSubscriber<idl_msg::QuadPositionCmdPubSubType, cpp_msg::QuadPositionCmd>
@@ -64,5 +68,5 @@ private:
   enum class offboard_mode { circle, lemniscate, external };
   offboard_mode offb_mode;
 
-  // void publish_position();
+  void send_position();
 };

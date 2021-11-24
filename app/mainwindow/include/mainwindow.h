@@ -57,11 +57,6 @@ private:
   // maps port type enum to actual port
   std::map<QString, QString> px4_port{};
 
-  // fastdds
-private:
-  // Create doamin participant
-  std::unique_ptr<DefaultParticipant> dp;
-
   // threads
 private:
   std::unique_ptr<OffboardThread> offboard_thread;
